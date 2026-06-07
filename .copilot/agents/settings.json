@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "defaultAgent": "developer",
+  "agents": [
+    {
+      "id": "developer",
+      "name": "Developer",
+      "path": ".copilot/agents/developer",
+      "instructions": ".copilot/agents/developer/AGENTS.md",
+      "description": "Implementation, debugging, refactoring, tests, and code review."
+    },
+    {
+      "id": "designer",
+      "name": "UI Designer",
+      "path": ".copilot/agents/ui-designer",
+      "instructions": ".copilot/agents/ui-designer/AGENTS.md",
+      "description": "Interface design, interaction flows, visual systems, and frontend polish."
+    },
+    {
+      "id": "marketing",
+      "name": "Marketing Research",
+      "path": ".copilot/agents/marketing-research",
+      "instructions": ".copilot/agents/marketing-research/AGENTS.md",
+      "description": "Market, audience, competitor, positioning, and messaging research."
+    },
+    {
+      "id": "gitcommit",
+      "name": "GitCommit",
+      "path": ".copilot/agents/gitcommit",
+      "instructions": ".copilot/agents/gitcommit/AGENTS.md",
+      "description": "Automates final validation, tests, and git push workflow before commit."
+    }
+  ]
+}
