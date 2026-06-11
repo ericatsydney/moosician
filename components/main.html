@@ -1,48 +1,92 @@
-<section class="hero" aria-labelledby="page-title">
+<section class="hero" id="practice" aria-labelledby="page-title">
   <div class="hero-content">
-    <p class="eyebrow">Guitar and music widgets</p>
-    <h1 id="page-title">A quiet workspace for practice, ideas, and songs.</h1>
+    <p class="eyebrow">Guitar and music tools</p>
+    <h1 id="page-title">Keep your practice in time and your ideas in motion.</h1>
     <p class="hero-copy">
-      Start with a clean dark interface for tools that help you play guitar, sketch progressions, and shape musical ideas.
+      A focused workspace for tempo work, songwriting, and quick musical decisions. Set a pulse, tap into a song, and keep the session uncluttered.
     </p>
-  </div>
-  <div class="status-panel" aria-label="Current workspace">
-    <span class="panel-label">Today</span>
-    <strong>Simple page foundation</strong>
-    <p>Header, body, and footer are split into component files.</p>
-  </div>
-</section>
-<section class="widget-area">
-  <!-- Metronome widget -->
-  <div class="metronome-embed">
-    <section class="metronome widget-module" role="region" aria-labelledby="metronome-title">
-      <h2 id="metronome-title" class="widget-title">Metronome</h2>
-      <div class="metronome-card">
-        <div class="metronome-controls">
-          <label for="metronome-rpm">RPM</label>
-          <input id="metronome-rpm" type="number" min="30" max="300" step="1" value="120" aria-label="Beats per minute" />
-
-          <div class="buttons">
-            <button id="metronome-start" class="btn primary">Start</button>
-            <button id="metronome-stop" class="btn" disabled>Stop</button>
-            <button id="metronome-mute" class="btn" aria-pressed="false">Mute</button>
-            <button id="metronome-tap" class="btn secondary">Tap tempo</button>
-          </div>
-          <div class="tap-panel">
-            <span class="tap-display">Average: <strong id="metronome-tap-value">--</strong> RPM</span>
-          </div>
-        </div>
-
-        <div class="metronome-visual" aria-hidden="false">
-          <div class="beat-strip" role="list" aria-label="Beats">
-            <div class="beat" data-beat="0" role="listitem" aria-label="Beat 1"></div>
-            <div class="beat" data-beat="1" role="listitem" aria-label="Beat 2"></div>
-            <div class="beat" data-beat="2" role="listitem" aria-label="Beat 3"></div>
-            <div class="beat" data-beat="3" role="listitem" aria-label="Beat 4"></div>
-          </div>
-          <div id="metronome-status" class="sr-only" aria-live="polite"></div>
-        </div>
+    <div class="hero-actions">
+      <a class="button button-primary" href="#tools">Open metronome</a>
+      <a class="button button-ghost" href="#compose">See session notes</a>
+    </div>
+    <dl class="hero-stats" aria-label="Workspace highlights">
+      <div>
+        <dt>Tempo range</dt>
+        <dd>30-300 BPM</dd>
       </div>
-    </section>
+      <div>
+        <dt>Beat feel</dt>
+        <dd>4/4 accents</dd>
+      </div>
+      <div>
+        <dt>State</dt>
+        <dd>Saved locally</dd>
+      </div>
+    </dl>
   </div>
+  <aside class="hero-card" aria-label="Practice mode overview">
+    <span class="panel-kicker">Practice mode</span>
+    <strong>Dial in the pulse, then stay out of the way.</strong>
+    <p>The interface keeps one strong accent for the beat and a quiet surface system around it.</p>
+    <div class="signal-track" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </aside>
+</section>
+
+<section class="workspace-grid">
+  <div class="workspace-panel" id="tools">
+    <p class="section-kicker">Tempo workstation</p>
+    <div class="widget-area">
+      <!-- Metronome widget -->
+      <div class="metronome-embed">
+        <section class="metronome widget-module" role="region" aria-labelledby="metronome-title">
+          <h2 id="metronome-title" class="widget-title">Metronome</h2>
+          <div class="metronome-card">
+            <div class="metronome-controls">
+              <label for="metronome-rpm">RPM</label>
+              <input id="metronome-rpm" type="number" min="30" max="300" step="1" value="120" aria-label="Beats per minute" />
+
+              <div class="buttons">
+                <button id="metronome-start" class="btn primary">Start</button>
+                <button id="metronome-stop" class="btn" disabled>Stop</button>
+                <button id="metronome-mute" class="btn" aria-pressed="false">Mute</button>
+                <button id="metronome-tap" class="btn secondary">Tap tempo</button>
+              </div>
+              <div class="tap-panel">
+                <span class="tap-display">Average: <strong id="metronome-tap-value">--</strong> RPM</span>
+              </div>
+            </div>
+
+            <div class="metronome-visual" aria-hidden="false">
+              <div class="beat-strip" role="list" aria-label="Beats">
+                <div class="beat" data-beat="0" role="listitem" aria-label="Beat 1"></div>
+                <div class="beat" data-beat="1" role="listitem" aria-label="Beat 2"></div>
+                <div class="beat" data-beat="2" role="listitem" aria-label="Beat 3"></div>
+                <div class="beat" data-beat="3" role="listitem" aria-label="Beat 4"></div>
+              </div>
+              <div id="metronome-status" class="sr-only" aria-live="polite"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <aside class="notes-card" id="compose">
+    <p class="section-kicker">Session notes</p>
+    <h2>Use the page like a practice desk.</h2>
+    <ol class="notes-list">
+      <li>Tap a tempo to match a song before you start counting.</li>
+      <li>Mute the click while you internalize subdivisions.</li>
+      <li>Keep the page open as a small, focused control surface.</li>
+    </ol>
+  </aside>
 </section>
