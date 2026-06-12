@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Debug Test</title>
+<style>
+.strum-note-btn { width: 60px; height: 60px; border: 1px solid gray; cursor: pointer; }
+.strum-note-btn[data-strum="up"] { background: cyan; }
+.strum-note-btn[data-strum="down"] { background: gold; }
+.strum-note-btn[data-strum="mute"] { background: #333; color: #666; }
+</style>
+</head>
+<body>
+<h1>Strummer Debug</h1>
+<input id="metronome-rpm" value="120">
+<div class="strum-notes">
+  <div class="strum-note"><button class="strum-note-btn" data-strum="down">&#9660;</button></div>
+  <div class="strum-note"><button class="strum-note-btn" data-strum="down">&#9660;</button></div>
+  <div class="strum-note"><button class="strum-note-btn" data-strum="up">&#9652;</button></div>
+  <div class="strum-note"><button class="strum-note-btn" data-strum="up">&#9652;</button></div>
+  <div class="strum-note"><button class="strum-note-btn" data-strum="down">&#9660;</button></div>
+  <div class="strum-note"><button class="strum-note-btn" data-strum="up">&#9652;</button></div>
+  <div class="strum-note"><button class="strum-note-btn" data-strum="down">&#9660;</button></div>
+  <div class="strum-note"><button class="strum-note-btn" data-strum="up">&#9652;</button></div>
+</div>
+<button id="strum-start">Start</button>
+<button id="strum-stop" disabled>Stop</button>
+<div id="strum-status">Ready</div>
+<script>
+// Inline minimal test
+let audioCtx = null;
+const defaultPattern = ["down","down","up","up","down","up","down","up"];
+const metronomeRpmInput = document.getElementById("metronome-rpm");
+const startBtn = document.getElementById("strum-start");
+const stopBtn = document.getElementById("strum-stop");
+const noteBtns = Array.from(document.querySelectorAll(".strum-note-btn"));
+const noteWraps = Array.from(document.querySelectorAll(".strum-note"));
+const statusEl = document.getElementById("strum-status");
+
+console.log("startBtn:", startBtn);
+console.log("noteBtns:", noteBtns.length);
+console.log("metronomeRpmInput:", metronomeRpmInput);
+
+// Test toggle
+noteBtns.forEach(btn => {
+  btn.addEventListener("click", function(){
+    const cur = this.dataset.strum || defaultPattern[noteBtns.indexOf(this)];
+    let next;
+    if(cur === "down") next = "up";
+    else if(cur === "up") next = "mute";
+    else next = "down";
+    this.dataset.strum = next;
+    if(next === "up") this.textContent = "\u25B2";
+    else if(next === "down") this.textContent = "\u25BC";
+    else this.textContent = "\u2014";
+    statusEl.textContent = "Toggled to: " + next;
+    console.log("toggled", cur, "->", next, "display:", this.textContent);
+  });
+});
+
+startBtn.addEventListener("click", function(){
+  statusEl.textContent = "Start clicked! tempo=" + metronomeRpmInput.value;
+  console.log("start clicked");
+});
+</script>
+</body>
+</html>
