@@ -1,44 +1,11 @@
-﻿<section class="hero" id="practice" aria-labelledby="page-title">
+<section class="hero" id="home" aria-labelledby="page-title">
   <div class="hero-content">
     <p class="eyebrow">Guitar and music tools</p>
-    <h1 id="page-title">Keep your practice in time and your ideas in motion.</h1>
+    <h1 id="page-title">Keep the pulse clear and the ideas moving.</h1>
     <p class="hero-copy">
-      A focused workspace for tempo work, songwriting, and quick musical decisions. Set a pulse, tap into a song, and keep the session uncluttered.
+      Moosucian keeps tempo work, strumming, and quick notes in one focused place.
     </p>
-    <div class="hero-actions">
-      <a class="button button-primary" href="#tools">Open metronome</a>
-      <a class="button button-ghost" href="#compose">See session notes</a>
-    </div>
-    <dl class="hero-stats" aria-label="Workspace highlights">
-      <div>
-        <dt>Tempo range</dt>
-        <dd>30-300 BPM</dd>
-      </div>
-      <div>
-        <dt>Beat feel</dt>
-        <dd>4/4 accents</dd>
-      </div>
-      <div>
-        <dt>State</dt>
-        <dd>Saved locally</dd>
-      </div>
-    </dl>
   </div>
-  <aside class="hero-card" aria-label="Practice mode overview">
-    <span class="panel-kicker">Practice mode</span>
-    <strong>Dial in the pulse, then stay out of the way.</strong>
-    <p>The interface keeps one strong accent for the beat and a quiet surface system around it.</p>
-    <div class="signal-track" aria-hidden="true">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </aside>
 </section>
 
 <section class="workspace-grid">
@@ -51,17 +18,16 @@
           <h2 id="metronome-title" class="widget-title">Metronome</h2>
           <div class="metronome-card">
             <div class="metronome-controls">
-              <label for="metronome-rpm">RPM</label>
+              <label for="metronome-rpm">BPM</label>
               <input id="metronome-rpm" type="number" min="30" max="300" step="1" value="120" aria-label="Beats per minute" />
 
               <div class="buttons">
-                <button id="metronome-start" class="btn primary">Start</button>
-                <button id="metronome-stop" class="btn" disabled>Stop</button>
+                <button id="metronome-toggle" class="btn primary">Start</button>
                 <button id="metronome-mute" class="btn" aria-pressed="false">Mute</button>
                 <button id="metronome-tap" class="btn secondary">Tap tempo</button>
               </div>
               <div class="tap-panel">
-                <span class="tap-display">Average: <strong id="metronome-tap-value">--</strong> RPM</span>
+                <span class="tap-display">Average: <strong id="metronome-tap-value">--</strong> BPM</span>
               </div>
             </div>
 
@@ -126,13 +92,10 @@
                 <span class="strum-beat-mark"></span>
               </div>
 
-              <!-- Start/Stop buttons -->
               <div class="buttons">
-                <button id="strum-start" class="btn primary">Start</button>
-                <button id="strum-stop" class="btn" disabled>Stop</button>
+                <button id="strum-toggle" class="btn primary">Start</button>
               </div>
 
-              <!-- Status display -->
             </div>
           </div>
         </section>
@@ -142,7 +105,7 @@
 
   <aside class="notes-card" id="compose">
     <p class="section-kicker">Session notes</p>
-    <h2>Use the page like a practice desk.</h2>
+    <h2>Use the page like a session desk.</h2>
     <ol class="notes-list">
       <li>Tap a tempo to match a song before you start counting.</li>
       <li>Mute the click while you internalize subdivisions.</li>

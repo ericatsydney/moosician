@@ -10,24 +10,22 @@
 <h1>Minimal Strummer</h1>
 <input id="metronome-rpm" type="number" value="120">
 <div>
-  <button class="strum-note-btn" data-strum="down">▼</button>
-  <button class="strum-note-btn" data-strum="down">▼</button>
-  <button class="strum-note-btn" data-strum="up">▲</button>
-  <button class="strum-note-btn" data-strum="up">▲</button>
-  <button class="strum-note-btn" data-strum="down">▼</button>
-  <button class="strum-note-btn" data-strum="up">▲</button>
-  <button class="strum-note-btn" data-strum="down">▼</button>
-  <button class="strum-note-btn" data-strum="up">▲</button>
+  <button class="strum-note-btn" data-strum="down">&#9660;</button>
+  <button class="strum-note-btn" data-strum="down">&#9660;</button>
+  <button class="strum-note-btn" data-strum="up">&#9652;</button>
+  <button class="strum-note-btn" data-strum="up">&#9652;</button>
+  <button class="strum-note-btn" data-strum="down">&#9660;</button>
+  <button class="strum-note-btn" data-strum="up">&#9652;</button>
+  <button class="strum-note-btn" data-strum="down">&#9660;</button>
+  <button class="strum-note-btn" data-strum="up">&#9652;</button>
 </div>
 <br>
-<button id="strum-start">START</button>
-<button id="strum-stop" disabled>STOP</button>
+<button id="strum-toggle">Start</button>
 <div id="strum-status">Ready</div>
 <script>
 // Direct copy of the strummer.js logic (bindAndInit only, no waitForAppReady)
 var metronomeRpmInput = document.getElementById("metronome-rpm");
-var startBtn = document.getElementById("strum-start");
-var stopBtn = document.getElementById("strum-stop");
+var toggleBtn = document.getElementById("strum-toggle");
 var statusEl = document.getElementById("strum-status");
 var noteBtns = Array.from(document.querySelectorAll(".strum-note-btn"));
 var defaultPattern = ["down","down","up","up","down","up","down","up"];
@@ -46,9 +44,9 @@ try{
       arr.forEach(function(dir, i){
         if(i < noteBtns.length){
           noteBtns[i].dataset.strum = dir;
-          if(dir === "up") noteBtns[i].textContent = "▲";
-          else if(dir === "down") noteBtns[i].textContent = "▼";
-          else noteBtns[i].textContent = "—";
+          if(dir === "up") noteBtns[i].textContent = "\u25B2";
+          else if(dir === "down") noteBtns[i].textContent = "\u25BC";
+          else noteBtns[i].textContent = "\u2014";
         }
       });
     }
@@ -65,9 +63,9 @@ noteBtns.forEach(function(btn){
     else if(cur === "up") next = "mute";
     else next = "down";
     this.dataset.strum = next;
-    if(next === "up") this.textContent = "▲";
-    else if(next === "down") this.textContent = "▼";
-    else this.textContent = "—";
+    if(next === "up") this.textContent = "\u25B2";
+    else if(next === "down") this.textContent = "\u25BC";
+    else this.textContent = "\u2014";
     statusEl.textContent = "Toggled: " + next;
     var pat = noteBtns.map(function(b){ return b.dataset.strum; });
     try{ localStorage.setItem("strummer-pattern", JSON.stringify(pat)); }catch(e){}
@@ -77,34 +75,23 @@ noteBtns.forEach(function(btn){
 // Init display
 noteBtns.forEach(function(btn, i){
   if(!btn.dataset.strum) btn.dataset.strum = defaultPattern[i];
-  var dir = btn.dataset.strum;
-  if(dir === "up") btn.textContent = "▲";
-  else if(dir === "down") btn.textContent = "▼";
-  else btn.textContent = "—";
 });
 
-// Start
-startBtn.addEventListener("click", function(){
-  if(isRunning) return;
+// Toggle start/stop
+toggleBtn.addEventListener("click", function(){
+  if(isRunning){
+    isRunning = false;
+    toggleBtn.textContent = "Start";
+    statusEl.textContent = "Stopped";
+    return;
+  }
   initAudio();
   tempo = Number(metronomeRpmInput.value) || 120;
   audioCtx.resume().then(function(){
     isRunning = true;
-    startBtn.disabled = true;
-    stopBtn.disabled = false;
+    toggleBtn.textContent = "Stop";
     statusEl.textContent = "Playing at " + tempo + " BPM";
-  }).catch(function(e){
-    statusEl.textContent = "Error: " + e.message;
   });
-});
-
-// Stop
-stopBtn.addEventListener("click", function(){
-  if(!isRunning) return;
-  isRunning = false;
-  startBtn.disabled = false;
-  stopBtn.disabled = true;
-  statusEl.textContent = "Stopped";
 });
 
 statusEl.textContent = "Initialized OK. Click a note button.";

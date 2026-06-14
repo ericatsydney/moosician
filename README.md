@@ -1,20 +1,20 @@
-# Mutils
+# Moosucian
 
 A small music utility page for guitar and songwriting workflows.
 
 ## What this page is about
 
-This project is a lightweight page shell for music-focused widgets. It currently includes a metronome module designed for practice and tempo discovery.
+This project is a lightweight page shell for music-focused widgets. It currently includes a metronome module designed for tempo discovery and a strummer module for rhythm patterns.
 
 ## Current functionality
 
 - **Metronome widget**
-  - RPM/BPM input with range validation (30–300)
-  - Start / Stop controls
+  - BPM input with range validation (30-300)
+  - Single Start / Stop toggle control
   - Mute toggle
   - Fixed 4/4 beat display with accented downbeat
   - Tap tempo button for matching a song's tempo
-  - Persistent RPM and mute state via `localStorage`
+  - Persistent BPM and mute state via `localStorage`
 
 ## How to start locally
 
@@ -148,9 +148,9 @@ http://localhost:8000/tests/metronome-smoke.html
 
 ## Files of note
 
-- `index.html` — main page shell with component placeholders
-- `components/main.html` — main content and metronome widget markup
-- `assets/css/metronome.css` — metronome widget styles
-- `assets/js/metronome.js` — metronome behavior and scheduling logic
-- `tests/metronome-smoke.html` — smoke test harness page
-- `tests/metronome.test.js` — automated smoke test script
+- `index.html` â€” main page shell with component placeholders
+- `components/main.html` â€” main content and metronome widget markup
+- `assets/css/metronome.css` â€” metronome widget styles
+- `assets/js/metronome.js` â€” metronome behavior and scheduling logic
+- `tests/metronome-smoke.html` â€” smoke test harness page
+- `tests/metronome.test.js` â€” automated smoke test script

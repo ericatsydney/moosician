@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -24,21 +24,20 @@
       <div id="test-report" aria-live="polite"></div>
       <div id="test-summary" class="test-summary" aria-live="polite">Running smoke tests...</div>
       <section class="test-fixture">
-        <!-- Metronome RPM source (required by strummer) -->
+        <!-- Metronome BPM source (required by strummer) -->
         <section class="metronome widget-module" role="region" aria-labelledby="metronome-title">
           <h2 id="metronome-title" class="widget-title">Metronome</h2>
           <div class="metronome-card">
             <div class="metronome-controls">
-              <label for="metronome-rpm">RPM</label>
+              <label for="metronome-rpm">BPM</label>
               <input id="metronome-rpm" type="number" min="30" max="300" step="1" value="120" aria-label="Beats per minute" />
               <div class="buttons">
-                <button id="metronome-start" class="btn primary">Start</button>
-                <button id="metronome-stop" class="btn" disabled>Stop</button>
+                <button id="metronome-toggle" class="btn primary">Start</button>
                 <button id="metronome-mute" class="btn" aria-pressed="false">Mute</button>
                 <button id="metronome-tap" class="btn secondary">Tap tempo</button>
               </div>
               <div class="tap-panel">
-                <span class="tap-display">Average: <strong id="metronome-tap-value">--</strong> RPM</span>
+                <span class="tap-display">Average: <strong id="metronome-tap-value">--</strong> BPM</span>
               </div>
             </div>
             <div class="metronome-visual" aria-hidden="false">
@@ -96,8 +95,7 @@
                 <span class="strum-beat-mark"></span>
               </div>
               <div class="buttons">
-                <button id="strum-start" class="btn primary">Start</button>
-                <button id="strum-stop" class="btn" disabled>Stop</button>
+                <button id="strum-toggle" class="btn primary">Start</button>
               </div>
             </div>
           </div>

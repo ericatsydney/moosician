@@ -23,25 +23,21 @@
   <div class="strum-note"><button class="strum-note-btn" data-strum="down">&#9660;</button></div>
   <div class="strum-note"><button class="strum-note-btn" data-strum="up">&#9652;</button></div>
 </div>
-<button id="strum-start">Start</button>
-<button id="strum-stop" disabled>Stop</button>
+<button id="strum-toggle">Start</button>
 <div id="strum-status">Ready</div>
 <script>
 // Inline minimal test
 let audioCtx = null;
 const defaultPattern = ["down","down","up","up","down","up","down","up"];
 const metronomeRpmInput = document.getElementById("metronome-rpm");
-const startBtn = document.getElementById("strum-start");
-const stopBtn = document.getElementById("strum-stop");
+const toggleBtn = document.getElementById("strum-toggle");
 const noteBtns = Array.from(document.querySelectorAll(".strum-note-btn"));
 const noteWraps = Array.from(document.querySelectorAll(".strum-note"));
 const statusEl = document.getElementById("strum-status");
+let isRunning = false;
 
-console.log("startBtn:", startBtn);
-console.log("noteBtns:", noteBtns.length);
-console.log("metronomeRpmInput:", metronomeRpmInput);
+function initAudio(){ if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
 
-// Test toggle
 noteBtns.forEach(btn => {
   btn.addEventListener("click", function(){
     const cur = this.dataset.strum || defaultPattern[noteBtns.indexOf(this)];
@@ -54,14 +50,26 @@ noteBtns.forEach(btn => {
     else if(next === "down") this.textContent = "\u25BC";
     else this.textContent = "\u2014";
     statusEl.textContent = "Toggled to: " + next;
-    console.log("toggled", cur, "->", next, "display:", this.textContent);
   });
 });
 
-startBtn.addEventListener("click", function(){
-  statusEl.textContent = "Start clicked! tempo=" + metronomeRpmInput.value;
-  console.log("start clicked");
+noteBtns.forEach(function(btn, i){
+  if(!btn.dataset.strum) btn.dataset.strum = defaultPattern[i];
+});
+
+toggleBtn.addEventListener("click", function(){
+  if(isRunning) {
+    isRunning = false;
+    toggleBtn.textContent = "Start";
+    statusEl.textContent = "Stopped";
+    return;
+  }
+  initAudio();
+  audioCtx.resume().then(function(){
+    isRunning = true;
+    toggleBtn.textContent = "Stop";
+    statusEl.textContent = "Playing at " + metronomeRpmInput.value + " BPM";
+  });
 });
 </script>
-</body>
-</html>
+</body></html>

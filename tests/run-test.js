@@ -39,13 +39,13 @@ console.log('Checking HTML structure...');
 const mainHtmlPath = path.join(__dirname, '../components/main.html');
 const mainHtml = fs.readFileSync(mainHtmlPath, 'utf-8');
 
-assert(mainHtml.includes('id="metronome-rpm"'), 'RPM input element exists in HTML');
-assert(mainHtml.includes('id="metronome-start"'), 'Start button exists in HTML');
-assert(mainHtml.includes('id="metronome-stop"'), 'Stop button exists in HTML');
+assert(mainHtml.includes('id="metronome-rpm"'), 'BPM input element exists in HTML');
+assert(mainHtml.includes('id="metronome-toggle"'), 'Metronome toggle button exists in HTML');
 assert(mainHtml.includes('id="metronome-mute"'), 'Mute button exists in HTML');
 assert(mainHtml.includes('id="metronome-tap"'), 'Tap tempo button exists in HTML');
 assert(mainHtml.includes('id="metronome-tap-value"'), 'Tap tempo display exists in HTML');
 assert(mainHtml.match(/class="beat"/g) && mainHtml.match(/class="beat"/g).length === 4, 'Four beat indicators exist');
+assert(mainHtml.includes('id="strum-toggle"'), 'Strummer toggle button exists in HTML');
 
 // Test 2: Check CSS file
 console.log('\nChecking CSS styles...');

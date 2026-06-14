@@ -33,23 +33,20 @@ function wait(ms) {
 
 async function runSmokeTests() {
   const bpmInput = document.getElementById('metronome-rpm');
-  const startBtn = document.getElementById('metronome-start');
-  const stopBtn = document.getElementById('metronome-stop');
+  const toggleBtn = document.getElementById('metronome-toggle');
   const muteBtn = document.getElementById('metronome-mute');
   const tapBtn = document.getElementById('metronome-tap');
   const tapValue = document.getElementById('metronome-tap-value');
   const beats = document.querySelectorAll('.beat');
 
-  assert(bpmInput !== null, 'RPM input should exist');
-  assert(startBtn !== null, 'Start button should exist');
-  assert(stopBtn !== null, 'Stop button should exist');
+  assert(bpmInput !== null, 'BPM input should exist');
+  assert(toggleBtn !== null, 'Toggle button should exist');
   assert(muteBtn !== null, 'Mute button should exist');
   assert(tapBtn !== null, 'Tap tempo button should exist');
   assert(tapValue !== null, 'Tap tempo display should exist');
   assert(beats.length === 4, 'There should be 4 beat indicators');
 
-  assert(startBtn.disabled === false, 'Start button should be enabled initially');
-  assert(stopBtn.disabled === true, 'Stop button should be disabled initially');
+  assert(toggleBtn.disabled === false, 'Toggle button should be enabled initially');
   assert(muteBtn.getAttribute('aria-pressed') === 'false', 'Mute button should be unpressed initially');
 
   tapBtn.click();
@@ -60,19 +57,17 @@ async function runSmokeTests() {
   await wait(80);
 
   const averageText = tapValue.textContent.trim();
-  assert(averageText !== '--' && averageText !== '', 'Tap tempo should compute an average RPM');
-  assert(Number(averageText) >= 30 && Number(averageText) <= 300, 'Tap tempo RPM should be in valid range');
-  assert(Number(bpmInput.value) === Number(averageText), 'RPM input should update to tap tempo value');
+  assert(averageText !== '--' && averageText !== '', 'Tap tempo should compute an average BPM');
+  assert(Number(averageText) >= 30 && Number(averageText) <= 300, 'Tap tempo BPM should be in valid range');
+  assert(Number(bpmInput.value) === Number(averageText), 'BPM input should update to tap tempo value');
 
-  startBtn.click();
+  toggleBtn.click();
   await wait(120);
-  assert(startBtn.disabled === true, 'Start button should disable after starting');
-  assert(stopBtn.disabled === false, 'Stop button should enable after starting');
+  assert(toggleBtn.textContent.trim() === 'Stop', 'Toggle button should show Stop after starting');
 
-  stopBtn.click();
+  toggleBtn.click();
   await wait(120);
-  assert(startBtn.disabled === false, 'Start button should re-enable after stopping');
-  assert(stopBtn.disabled === true, 'Stop button should re-disable after stopping');
+  assert(toggleBtn.textContent.trim() === 'Start', 'Toggle button should show Start after stopping');
 
   muteBtn.click();
   await wait(20);

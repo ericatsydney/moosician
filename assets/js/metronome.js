@@ -17,14 +17,13 @@
   // core functions will be bound once DOM elements exist
   function bindAndInit(){
     const bpmInput = document.getElementById('metronome-rpm');
-    const startBtn = document.getElementById('metronome-start');
-    const stopBtn = document.getElementById('metronome-stop');
+    const toggleBtn = document.getElementById('metronome-toggle');
     const muteBtn = document.getElementById('metronome-mute');
     const tapBtn = document.getElementById('metronome-tap');
     const tapValue = document.getElementById('metronome-tap-value');
     const beats = Array.from(document.querySelectorAll('.beat'));
     const statusLive = document.getElementById('metronome-status');
-    if(!bpmInput || !startBtn) return;
+    if(!bpmInput || !toggleBtn) return;
 
     let tapTimes = [];
     let tapTimeout = null;
@@ -60,7 +59,7 @@
         tempo = bpm;
         try{ localStorage.setItem('metronome-bpm', bpm); }catch(e){}
         updateTapDisplay(bpm);
-        statusLive.textContent = `Tap tempo: ${bpm} RPM`;
+        statusLive.textContent = `Tap tempo: ${bpm} BPM`;
       }
     }
 
@@ -107,37 +106,48 @@
     }
 
     function start(){
+      console.log('Starting metronome at', tempo, 'BPM');
       if(isRunning) return;
       initAudio();
       tempo = clampBPM(Number(bpmInput.value));
       try{ localStorage.setItem('metronome-bpm', tempo); }catch(e){}
-      audioCtx.resume().then(()=>{
-        isRunning = true;
-        startBtn.disabled = true; stopBtn.disabled = false;
-        currentBeat = 0;
+      isRunning = true;
+      toggleBtn.textContent = 'Stop';
+      currentBeat = 0;
+      statusLive.textContent = `Started at ${tempo} BPM`;
+
+      function beginScheduler(){
         nextNoteTime = audioCtx.currentTime + 0.05;
         timerID = setInterval(scheduler, lookahead);
-        statusLive.textContent = `Started at ${tempo} RPM`;
-      });
+        scheduler();
+      }
+
+      if(audioCtx.state === 'suspended'){
+        audioCtx.resume().then(beginScheduler).catch(()=>{
+          statusLive.textContent = `Started at ${tempo} BPM (audio unavailable)`;
+          beginScheduler();
+        });
+      } else {
+        beginScheduler();
+      }
     }
 
     function stop(){
       if(!isRunning) return;
       isRunning = false;
-      startBtn.disabled = false; stopBtn.disabled = true;
+      toggleBtn.textContent = 'Start';
       if(timerID){ clearInterval(timerID); timerID = null; }
       beats.forEach(b=>b.classList.remove('active','accent','regular'));
       statusLive.textContent = `Stopped`;
     }
 
     // UI wiring
-    startBtn.addEventListener('click', ()=>{ start(); });
-    stopBtn.addEventListener('click', ()=>{ stop(); });
+    toggleBtn.addEventListener('click', ()=>{ if(isRunning) stop(); else start(); });
     muteBtn.addEventListener('click', ()=>{ isMuted = !isMuted; muteBtn.setAttribute('aria-pressed', String(isMuted)); try{ localStorage.setItem('metronome-muted', String(isMuted)); }catch(e){} });
     bpmInput.addEventListener('change', ()=>{ bpmInput.value = clampBPM(bpmInput.value); tempo = Number(bpmInput.value); try{ localStorage.setItem('metronome-bpm', tempo); }catch(e){} });
     if(tapBtn){ tapBtn.addEventListener('click', ()=>{ recordTap(); }); }
     document.addEventListener('keydown', (e)=>{
-      if(e.code==='Space' && document.activeElement && (document.activeElement===startBtn || document.activeElement===stopBtn || document.activeElement===bpmInput)){
+      if(e.code==='Space' && document.activeElement && (document.activeElement===toggleBtn || document.activeElement===bpmInput)){
         e.preventDefault(); if(isRunning) stop(); else start();
       }
     });

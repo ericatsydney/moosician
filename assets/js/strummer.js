@@ -23,14 +23,13 @@
 
   function bindAndInit(){
     const metronomeRpmInput = document.getElementById("metronome-rpm");
-    const startBtn = document.getElementById("strum-start");
-    const stopBtn = document.getElementById("strum-stop");
+    const toggleBtn = document.getElementById("strum-toggle");
     const noteBtns = Array.from(document.querySelectorAll(".strum-note-btn"));
     const noteWraps = Array.from(document.querySelectorAll(".strum-note"));
 
-    if(!startBtn) return;
+    if(!toggleBtn) return;
 
-    // Read tempo from metronome RPM input
+    // Read tempo from the shared metronome BPM input
     if(metronomeRpmInput){
       tempo = clampBPM(Number(metronomeRpmInput.value));
     }
@@ -143,8 +142,7 @@
         audioCtx.resume();
       }
       isRunning = true;
-      startBtn.disabled = true;
-      stopBtn.disabled = false;
+      toggleBtn.textContent = "Stop";
       currentStep = 0;
       nextNoteTime = audioCtx.currentTime + 0.05;
       timerID = window.setInterval(scheduler, lookahead);
@@ -153,20 +151,21 @@
     function stop(){
       if(!isRunning) return;
       isRunning = false;
-      startBtn.disabled = false;
-      stopBtn.disabled = true;
+      toggleBtn.textContent = "Start";
       if(timerID){ clearInterval(timerID); timerID = null; }
       noteWraps.forEach(w => w.classList.remove("active"));
           }
 
     // UI wiring
-    startBtn.addEventListener("click", start);
-    stopBtn.addEventListener("click", stop);
+    toggleBtn.addEventListener("click", function(){
+      if(isRunning) stop();
+      else start();
+    });
 
     // Keyboard shortcut: space toggles when strummer is focused
     document.addEventListener("keydown", function(e){
       if(e.code === "Space" && document.activeElement &&
-        (document.activeElement === startBtn || document.activeElement === stopBtn)){
+        (document.activeElement === toggleBtn)){
         e.preventDefault();
         if(isRunning) stop(); else start();
       }

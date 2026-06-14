@@ -36,18 +36,17 @@
       var bpmInput = document.getElementById("strum-bpm");
       assert(!bpmInput, "No #strum-bpm input should exist");
 
-      // Test 3: Metronome RPM input exists
-      var rpmInput = document.getElementById("metronome-rpm");
-      assert(!!rpmInput, "#metronome-rpm should exist (tempo source)");
+      // Test 3: Metronome BPM input exists
+      var bpmInput = document.getElementById("metronome-rpm");
+      assert(!!bpmInput, "#metronome-rpm should exist (tempo source)");
 
       // Test 4: 8 note buttons exist
       var noteBtns = document.querySelectorAll(".strum-note-btn");
       assert(noteBtns.length === 8, "Should have 8 note buttons, got " + noteBtns.length);
 
-      // Test 5: Start and Stop buttons exist
-      var startBtn = document.getElementById("strum-start");
-      var stopBtn = document.getElementById("strum-stop");
-      assert(!!startBtn && !!stopBtn, "Start and Stop buttons should exist");
+      // Test 5: Toggle button exists
+      var toggleBtn = document.getElementById("strum-toggle");
+      assert(!!toggleBtn, "Toggle button should exist");
 
       // Test 6: Click toggles down -> up -> mute -> down&down -> down&up -> down
       var firstBtn = noteBtns[0];
@@ -79,12 +78,12 @@
       assert(typeof window._strummer.start === "function", "_strummer.start should be a function");
       assert(typeof window._strummer.stop === "function", "_strummer.stop should be a function");
 
-      // Test 8: setBpm writes to metronome RPM
+      // Test 8: setBpm writes to metronome BPM
       window._strummer.setBpm(140);
-      assert(rpmInput.value === "140", "setBpm(140) should set metronome RPM to 140, got: " + rpmInput.value);
+      assert(bpmInput.value === "140", "setBpm(140) should set metronome BPM to 140, got: " + bpmInput.value);
 
       // Restore default
-      rpmInput.value = 120;
+      bpmInput.value = 120;
 
       // Summary
       summary.textContent = passCount + "/" + (passCount + failCount) + " tests passed" +
