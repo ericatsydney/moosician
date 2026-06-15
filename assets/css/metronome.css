@@ -1,9 +1,6 @@
 /* Metronome widget styles */
 .widget-area {
-  display: block;
-  width: 100%;
-  padding: 0;
-  margin: 0;
+  display: contents;
 }
 
 .metronome-embed {
@@ -245,6 +242,7 @@
 }
 
 @media (max-width: 760px) {
+
   .metronome-card {
     grid-template-columns: 1fr;
   }

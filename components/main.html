@@ -9,108 +9,79 @@
 </section>
 
 <section class="workspace-grid">
-  <div class="workspace-panel" id="tools">
-    <p class="section-kicker">Tempo workstation</p>
-    <div class="widget-area">
-      <!-- Metronome widget -->
-      <div class="metronome-embed">
-        <section class="metronome widget-module" role="region" aria-labelledby="metronome-title">
-          <h2 id="metronome-title" class="widget-title">Metronome</h2>
-          <div class="metronome-card">
-            <div class="metronome-controls">
-              <label for="metronome-rpm">BPM</label>
-              <input id="metronome-rpm" type="number" min="30" max="300" step="1" value="120" aria-label="Beats per minute" />
+  <!-- Metronome -->
+  <div class="widget-card" id="metronome-card">
+    <section class="metronome widget-module" role="region" aria-labelledby="metronome-title">
+      <h2 id="metronome-title" class="widget-title">Metronome</h2>
+      <div class="metronome-card">
+        <div class="metronome-controls">
+          <label for="metronome-rpm">BPM</label>
+          <input id="metronome-rpm" type="number" min="30" max="300" step="1" value="120" aria-label="Beats per minute" />
 
-              <div class="buttons">
-                <button id="metronome-toggle" class="btn primary">Start</button>
-                <button id="metronome-mute" class="btn" aria-pressed="false">Mute</button>
-                <button id="metronome-tap" class="btn secondary">Tap tempo</button>
-              </div>
-              <div class="tap-panel">
-                <span class="tap-display">Average: <strong id="metronome-tap-value">--</strong> BPM</span>
-              </div>
-            </div>
-
-            <div class="metronome-visual" aria-hidden="false">
-              <div class="beat-strip" role="list" aria-label="Beats">
-                <div class="beat" data-beat="0" role="listitem" aria-label="Beat 1"></div>
-                <div class="beat" data-beat="1" role="listitem" aria-label="Beat 2"></div>
-                <div class="beat" data-beat="2" role="listitem" aria-label="Beat 3"></div>
-                <div class="beat" data-beat="3" role="listitem" aria-label="Beat 4"></div>
-              </div>
-              <div id="metronome-status" class="sr-only" aria-live="polite"></div>
-            </div>
+          <div class="buttons">
+            <button id="metronome-toggle" class="btn primary">Start</button>
+            <button id="metronome-mute" class="btn" aria-pressed="false">Mute</button>
+            <button id="metronome-tap" class="btn secondary">Tap tempo</button>
           </div>
-        </section>
-      </div>
-
-      <!-- Strummer widget -->
-      <div class="strummer-embed" style="margin-top: 20px;">
-        <section class="strummer widget-module" role="region" aria-labelledby="strummer-title">
-          <h2 id="strummer-title" class="widget-title">Strummer</h2>
-          <div class="strum-card">
-            <div class="strum-controls">
-              <p class="strum-grid-label">Strum pattern</p>
-
-              <!-- 8 note grid: each is a clickable up/down/mute toggle -->
-              <div class="strum-notes" role="group" aria-label="Strum pattern notes">
-                <div class="strum-note" role="listitem">
-                  <button class="strum-note-btn" data-strum="down" aria-label="Note 1">&#9660;</button>
-                </div>
-                <div class="strum-note" role="listitem">
-                  <button class="strum-note-btn" data-strum="down" aria-label="Note 2">&#9660;</button>
-                </div>
-                <div class="strum-note" role="listitem">
-                  <button class="strum-note-btn" data-strum="up" aria-label="Note 3">&#9652;</button>
-                </div>
-                <div class="strum-note" role="listitem">
-                  <button class="strum-note-btn" data-strum="up" aria-label="Note 4">&#9652;</button>
-                </div>
-                <div class="strum-note" role="listitem">
-                  <button class="strum-note-btn" data-strum="down" aria-label="Note 5">&#9660;</button>
-                </div>
-                <div class="strum-note" role="listitem">
-                  <button class="strum-note-btn" data-strum="up" aria-label="Note 6">&#9652;</button>
-                </div>
-                <div class="strum-note" role="listitem">
-                  <button class="strum-note-btn" data-strum="down" aria-label="Note 7">&#9660;</button>
-                </div>
-                <div class="strum-note" role="listitem">
-                  <button class="strum-note-btn" data-strum="up" aria-label="Note 8">&#9652;</button>
-                </div>
-              </div>
-
-              <!-- Beat indicator bar -->
-              <div class="strum-beat-indicator" aria-hidden="true">
-                <span class="strum-beat-mark"></span>
-                <span class="strum-beat-mark"></span>
-                <span class="strum-beat-mark"></span>
-                <span class="strum-beat-mark"></span>
-                <span class="strum-beat-mark"></span>
-                <span class="strum-beat-mark"></span>
-                <span class="strum-beat-mark"></span>
-                <span class="strum-beat-mark"></span>
-              </div>
-
-              <div class="buttons">
-                <button id="strum-toggle" class="btn primary">Start</button>
-              </div>
-
-            </div>
+          <div class="tap-panel">
+            <span class="tap-display">Average: <strong id="metronome-tap-value">--</strong> BPM</span>
           </div>
-        </section>
+        </div>
+
+        <div class="metronome-visual" aria-hidden="false">
+          <div class="beat-strip" role="list" aria-label="Beats">
+            <div class="beat" data-beat="0" role="listitem" aria-label="Beat 1"></div>
+            <div class="beat" data-beat="1" role="listitem" aria-label="Beat 2"></div>
+            <div class="beat" data-beat="2" role="listitem" aria-label="Beat 3"></div>
+            <div class="beat" data-beat="3" role="listitem" aria-label="Beat 4"></div>
+          </div>
+          <div id="metronome-status" class="sr-only" aria-live="polite"></div>
+        </div>
       </div>
-    </div>
+    </section>
   </div>
 
-  <aside class="notes-card" id="compose">
-    <p class="section-kicker">Session notes</p>
-    <h2>Use the page like a session desk.</h2>
-    <ol class="notes-list">
-      <li>Tap a tempo to match a song before you start counting.</li>
-      <li>Mute the click while you internalize subdivisions.</li>
-      <li>Keep the page open as a small, focused control surface.</li>
-      <li>Dial in a strum pattern and let it play your down/up phrasing.</li>
-    </ol>
-  </aside>
+  <!-- Strummer -->
+  <div class="widget-card" id="strummer-card">
+    <section class="strummer widget-module" role="region" aria-labelledby="strummer-title">
+      <h2 id="strummer-title" class="widget-title">Strummer</h2>
+      <div class="strum-card">
+        <div class="strum-controls">
+          <p class="strum-grid-label">Strum pattern</p>
+
+          <div class="strum-notes" role="group" aria-label="Strum pattern notes">
+            <div class="strum-note" role="listitem">
+              <button class="strum-note-btn" data-strum="down" aria-label="Note 1">&#9660;</button>
+            </div>
+            <div class="strum-note" role="listitem">
+              <button class="strum-note-btn" data-strum="down" aria-label="Note 2">&#9660;</button>
+            </div>
+            <div class="strum-note" role="listitem">
+              <button class="strum-note-btn" data-strum="up" aria-label="Note 3">&#9652;</button>
+            </div>
+            <div class="strum-note" role="listitem">
+              <button class="strum-note-btn" data-strum="up" aria-label="Note 4">&#9652;</button>
+            </div>
+            <div class="strum-note" role="listitem">
+              <button class="strum-note-btn" data-strum="down" aria-label="Note 5">&#9660;</button>
+            </div>
+            <div class="strum-note" role="listitem">
+              <button class="strum-note-btn" data-strum="up" aria-label="Note 6">&#9652;</button>
+            </div>
+            <div class="strum-note" role="listitem">
+              <button class="strum-note-btn" data-strum="down" aria-label="Note 7">&#9660;</button>
+            </div>
+            <div class="strum-note" role="listitem">
+              <button class="strum-note-btn" data-strum="up" aria-label="Note 8">&#9652;</button>
+            </div>
+          </div>
+
+          <div class="buttons">
+            <button id="strum-toggle" class="btn primary">Start</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </div>
 </section>
