@@ -1,4 +1,4 @@
-// Chord chart widget — select root/variant, view SVG fretboard diagram
+﻿// Chord chart widget â€” select root/variant, view SVG fretboard diagram
 ;(function(){
   const ROOTS = ["C","D","E","F","G","A","B"];
   const VARIANTS = ["maj","m","7","maj7","m7","sus4"];
@@ -20,9 +20,10 @@
     const FRET_HEIGHT = 36;
     const FRET_COUNT = 3;
 
-    // Compute startFret: minimum non-zero fretted position, at least 1
+        // Compute startFret: show 1st fret when possible; shift up only if chord won't fit
     const fretted = strings.filter(function(v){ return v > 0; });
-    const startFret = fretted.length ? Math.max(1, Math.min.apply(null, fretted)) : 1;
+    const maxFretted = fretted.length ? Math.max.apply(null, fretted) : 1;
+    const startFret = Math.max(1, maxFretted - 2);
     const showFretLabel = startFret > 1;
 
     // Total height
