@@ -8,3 +8,7 @@ When writing or updating any `.md` file under this directory tree:
 - **No code snippets** unless a code block is essential to communicate a specific technical detail that plain prose cannot convey. Prefer describing what needs to happen in natural language.
 - **No repetition.** Do not repeat the same code block across multiple tasks. Reference earlier tasks by name where needed.
 - **Use inline code** (backticks) for file paths, config keys, and short identifiers, never for multi-line blocks.
+
+## Implementation preferences
+
+- **Subagent-driven execution.** When implementing a plan, prefer the subagent-driven approach — dispatch a fresh subagent per task with review between tasks. This saves tokens and yields faster iteration.
