@@ -213,9 +213,6 @@ body[data-ready="true"] .site-footer {
   flex-direction: column;
   overflow: hidden;
   border-radius: var(--radius-xl);
-  background:
-    linear-gradient(180deg, rgba(17, 25, 43, 0.88), rgba(12, 19, 33, 0.92)),
-    var(--panel);
   box-shadow: var(--shadow);
   backdrop-filter: blur(18px);
   padding: 22px;
