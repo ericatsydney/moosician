@@ -1,0 +1,145 @@
+ <!doctype html>
+ <html lang="en">
+   <head>
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <title>Chord Chart Smoke Test</title>
+     <link rel="stylesheet" href="../assets/css/styles.css">
+     <link rel="stylesheet" href="../assets/css/metronome.css">
+     <link rel="stylesheet" href="../assets/css/strummer.css">
+     <link rel="stylesheet" href="../assets/css/chord-chart.css">
+     <style>
+       body { margin: 0; padding: 2rem; min-height: 100vh; background: #071018; color: #f2f5f8; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+       h1 { margin: 0 0 1rem; font-size: 1.7rem; }
+       #test-report { margin-bottom: 1.5rem; }
+       .test-line { margin: 0.25rem 0; }
+       .test-pass { color: #7dd3fc; }
+       .test-fail { color: #f87171; }
+       .test-summary { margin-top: 1.25rem; padding: 1rem; border-radius: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); }
+       .test-fixture { max-width: 520px; }
+     </style>
+   </head>
+   <body>
+     <main>
+       <h1>Chord Chart Smoke Test</h1>
+       <div id="test-report" aria-live="polite"></div>
+       <div id="test-summary" class="test-summary" aria-live="polite">Running smoke tests...</div>
+       <section class="test-fixture">
+         <!-- Chord chart fixture -->
+         <section class="chord-chart widget-module" role="region" aria-labelledby="chord-title">
+           <h2 id="chord-title" class="widget-title">Chord Chart</h2>
+           <p class="widget-subtitle">Choose a root and variant to see the fingering</p>
+           <div class="chord-card">
+             <div class="chord-selectors">
+               <div class="chord-roots" role="group" aria-label="Root note"></div>
+               <div class="chord-variants" role="group" aria-label="Chord variant"></div>
+             </div>
+             <div class="chord-diagram"></div>
+             <p class="chord-label" aria-live="polite">C</p>
+           </div>
+         </section>
+       </section>
+     </main>
+     <script src="../assets/js/chords.js"></script>
+     <script src="../assets/js/chord-chart.js"></script>
+     <script>
+       ;(function(){
+         var report = document.getElementById("test-report");
+         var summary = document.getElementById("test-summary");
+         var passCount = 0;
+         var failCount = 0;
+ 
+         function pass(msg){
+           passCount++;
+           var el = document.createElement("div");
+           el.className = "test-line test-pass";
+           el.textContent = "\u2713 PASS: " + msg;
+           report.appendChild(el);
+         }
+ 
+         function fail(msg){
+           failCount++;
+           var el = document.createElement("div");
+           el.className = "test-line test-fail";
+           el.textContent = "\u2717 FAIL: " + msg;
+           report.appendChild(el);
+         }
+ 
+         function assert(condition, msg){
+           if(condition) pass(msg);
+           else fail(msg);
+         }
+ 
+         window.addEventListener("load", function(){
+           window.setTimeout(function(){
+             // Test 1: Chord data exists
+             assert(!!window.CHORD_DATA, "window.CHORD_DATA should exist");
+             assert(typeof window.CHORD_DATA === "object", "CHORD_DATA should be an object");
+ 
+             // Test 2: 42 chords defined
+             var keys = Object.keys(window.CHORD_DATA);
+             assert(keys.length === 42, "Should have 42 chord entries, got " + keys.length);
+ 
+             // Test 3: Root buttons exist
+             var rootBtns = document.querySelectorAll(".chord-roots .chord-btn");
+             assert(rootBtns.length === 7, "Should have 7 root buttons, got " + rootBtns.length);
+ 
+             // Test 4: Variant buttons exist
+             var variantBtns = document.querySelectorAll(".chord-variants .chord-btn");
+             assert(variantBtns.length === 6, "Should have 6 variant buttons, got " + variantBtns.length);
+ 
+             // Test 5: SVG diagram renders
+             var svg = document.querySelector(".chord-diagram svg");
+             assert(!!svg, "SVG diagram should exist in .chord-diagram");
+ 
+             // Test 6: Chord label shows C
+             var label = document.querySelector(".chord-label");
+             assert(label && label.textContent === "C", "Chord label should show C, got: " + (label ? label.textContent : "null"));
+ 
+             // Test 7: C active
+             var cBtn = document.querySelector('.chord-roots [data-root="C"]');
+             assert(cBtn && cBtn.classList.contains("active"), "C root button should be active");
+ 
+             // Test 8: maj active
+             var majBtn = document.querySelector('.chord-variants [data-variant="maj"]');
+             assert(majBtn && majBtn.classList.contains("active"), "maj variant button should be active");
+ 
+             // Test 9: Click D root updates chord
+             var dBtn = document.querySelector('.chord-roots [data-root="D"]');
+             if(dBtn){
+               dBtn.click();
+               setTimeout(function(){
+                 var label2 = document.querySelector(".chord-label");
+                 assert(label2.textContent === "D", "After clicking D, label should be D, got: " + label2.textContent);
+                 assert(dBtn.classList.contains("active"), "D button should be active after click");
+ 
+                 // Test 10: Click m variant shows Dm
+                 var mBtn = document.querySelector('.chord-variants [data-variant="m"]');
+                 if(mBtn){
+                   mBtn.click();
+                   setTimeout(function(){
+                     var label3 = document.querySelector(".chord-label");
+                     assert(label3.textContent === "Dm", "After clicking D+m, label should be Dm, got: " + label3.textContent);
+ 
+                     // Test 11: SVG still exists after changes
+                     var svg2 = document.querySelector(".chord-diagram svg");
+                     assert(!!svg2, "SVG should still exist after chord change");
+ 
+                     summary.innerHTML = passCount + "/" + (passCount + failCount) + " tests passed" +
+                       (failCount > 0 ? " (" + failCount + " failed)" : "");
+                   }, 200);
+                 }
+               }, 200);
+             }
+ 
+             setTimeout(function(){
+               if(failCount === 0 && passCount >= 8){
+                 summary.innerHTML = passCount + "/" + (passCount + failCount) + " tests passed (initial checks)";
+               }
+             }, 500);
+           }, 300);
+         });
+       })();
+     </script>
+   </body>
+ </html>
