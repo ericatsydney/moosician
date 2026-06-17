@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   color-scheme: dark;
   --bg: #070b14;
   --bg-soft: #0e1524;
@@ -199,6 +199,13 @@ body[data-ready="true"] .site-footer {
   font-size: clamp(2.4rem, 5.2vw, 4.6rem);
   line-height: 0.92;
 }
+.hero-subtitle {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 1.1rem;
+  font-family: var(--display);
+}
+
 
 .hero-copy {
   max-width: none;
@@ -218,6 +225,12 @@ body[data-ready="true"] .site-footer {
   padding: 22px;
   min-width: 0;
 }
+.widget-subtitle {
+  margin: 2px 0 14px;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
 
 .workspace-grid {
   display: grid;

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://moosician.tensorq.workers.dev/sitemap.xml
