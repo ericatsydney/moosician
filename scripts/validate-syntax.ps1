@@ -19,6 +19,9 @@ $projectRoot = (Get-Item $PSScriptRoot).Parent.FullName
 $filesToCheck = @(
     "assets/js/app.js",
     "assets/js/metronome.js",
+    "assets/js/strummer.js",
+    "assets/js/chords.js",
+    "assets/js/chord-chart.js",
     "tests/metronome.test.js",
     "tests/run-test.js"
 )
