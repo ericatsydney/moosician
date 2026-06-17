@@ -56,8 +56,6 @@ const toggleBtn = new FakeElement('metronome-toggle');
 toggleBtn.textContent = 'Start';
 const bpmInput = new FakeElement('metronome-rpm');
 bpmInput.value = '120';
-const muteBtn = new FakeElement('metronome-mute');
-muteBtn.setAttribute('aria-pressed', 'false');
 const tapBtn = new FakeElement('metronome-tap');
 const tapValue = new FakeElement('metronome-tap-value');
 const statusLive = new FakeElement('metronome-status');
@@ -74,10 +72,7 @@ const documentStub = {
       case 'metronome-rpm':
         return bpmInput;
       case 'metronome-toggle':
-        return toggleBtn;
-      case 'metronome-mute':
-        return muteBtn;
-      case 'metronome-tap':
+        return toggleBtn;      case 'metronome-tap':
         return tapBtn;
       case 'metronome-tap-value':
         return tapValue;

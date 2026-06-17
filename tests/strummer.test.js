@@ -48,7 +48,7 @@
       var toggleBtn = document.getElementById("strum-toggle");
       assert(!!toggleBtn, "Toggle button should exist");
 
-      // Test 6: Click toggles down -> up -> mute -> down&down -> down&up -> down
+      // Test 6: Click toggles down -> up -> mute -> mute&up -> down&up -> down
       var firstBtn = noteBtns[0];
       var initDir = firstBtn.dataset.strum;
       assert(initDir === "down", "First button should start as down, got: " + initDir);
@@ -62,8 +62,8 @@
       assert(firstBtn.textContent === "\u2014", "Click 2 icon: should be \u2014, got: " + firstBtn.textContent);
 
       firstBtn.click();
-      assert(firstBtn.dataset.strum === "down&down", "Click 3: should be down&down, got: " + firstBtn.dataset.strum);
-      assert(firstBtn.textContent === "\u25BC\u25BC", "Click 3 icon: should be \u25BC\u25BC, got: " + firstBtn.textContent);
+      assert(firstBtn.dataset.strum === "mute&up", "Click 3: should be mute&up, got: " + firstBtn.dataset.strum);
+      assert(firstBtn.textContent === "\u2014\u25B2", "Click 3 icon: should be \u2014\u25B2, got: " + firstBtn.textContent);
 
       firstBtn.click();
       assert(firstBtn.dataset.strum === "down&up", "Click 4: should be down&up, got: " + firstBtn.dataset.strum);

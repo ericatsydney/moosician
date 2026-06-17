@@ -209,8 +209,9 @@ body[data-ready="true"] .site-footer {
 
 .widget-card {
   position: relative;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
-  border: 1px solid var(--line);
   border-radius: var(--radius-xl);
   background:
     linear-gradient(180deg, rgba(17, 25, 43, 0.88), rgba(12, 19, 33, 0.92)),
@@ -225,7 +226,7 @@ body[data-ready="true"] .site-footer {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
-  align-items: start;
+  align-items: stretch;
   padding: 10px 0 20px;
 }
 

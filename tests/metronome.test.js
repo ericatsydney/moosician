@@ -33,22 +33,16 @@ function wait(ms) {
 
 async function runSmokeTests() {
   const bpmInput = document.getElementById('metronome-rpm');
-  const toggleBtn = document.getElementById('metronome-toggle');
-  const muteBtn = document.getElementById('metronome-mute');
-  const tapBtn = document.getElementById('metronome-tap');
+  const toggleBtn = document.getElementById('metronome-toggle');  const tapBtn = document.getElementById('metronome-tap');
   const tapValue = document.getElementById('metronome-tap-value');
   const beats = document.querySelectorAll('.beat');
 
   assert(bpmInput !== null, 'BPM input should exist');
-  assert(toggleBtn !== null, 'Toggle button should exist');
-  assert(muteBtn !== null, 'Mute button should exist');
-  assert(tapBtn !== null, 'Tap tempo button should exist');
+  assert(toggleBtn !== null, 'Toggle button should exist');  assert(tapBtn !== null, 'Tap tempo button should exist');
   assert(tapValue !== null, 'Tap tempo display should exist');
   assert(beats.length === 4, 'There should be 4 beat indicators');
 
   assert(toggleBtn.disabled === false, 'Toggle button should be enabled initially');
-  assert(muteBtn.getAttribute('aria-pressed') === 'false', 'Mute button should be unpressed initially');
-
   tapBtn.click();
   await wait(80);
   tapBtn.click();
@@ -68,11 +62,6 @@ async function runSmokeTests() {
   toggleBtn.click();
   await wait(120);
   assert(toggleBtn.textContent.trim() === 'Start', 'Toggle button should show Start after stopping');
-
-  muteBtn.click();
-  await wait(20);
-  assert(muteBtn.getAttribute('aria-pressed') === 'true', 'Mute button should toggle on');
-
   appendSummary('Smoke tests passed.', true);
 }
 

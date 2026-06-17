@@ -13,14 +13,14 @@ let testResults = [];
 
 function logPass(message) {
   passCount++;
-  testResults.push(`✓ ${message}`);
-  console.log(`\x1b[32m✓\x1b[0m ${message}`);
+  testResults.push(`Ã¢Å“â€œ ${message}`);
+  console.log(`\x1b[32mÃ¢Å“â€œ\x1b[0m ${message}`);
 }
 
 function logFail(message) {
   failCount++;
-  testResults.push(`✗ ${message}`);
-  console.log(`\x1b[31m✗\x1b[0m ${message}`);
+  testResults.push(`Ã¢Å“â€” ${message}`);
+  console.log(`\x1b[31mÃ¢Å“â€”\x1b[0m ${message}`);
 }
 
 function assert(condition, message) {
@@ -41,7 +41,6 @@ const mainHtml = fs.readFileSync(mainHtmlPath, 'utf-8');
 
 assert(mainHtml.includes('id="metronome-rpm"'), 'BPM input element exists in HTML');
 assert(mainHtml.includes('id="metronome-toggle"'), 'Metronome toggle button exists in HTML');
-assert(mainHtml.includes('id="metronome-mute"'), 'Mute button exists in HTML');
 assert(mainHtml.includes('id="metronome-tap"'), 'Tap tempo button exists in HTML');
 assert(mainHtml.includes('id="metronome-tap-value"'), 'Tap tempo display exists in HTML');
 assert(mainHtml.match(/class="beat"/g) && mainHtml.match(/class="beat"/g).length === 4, 'Four beat indicators exist');

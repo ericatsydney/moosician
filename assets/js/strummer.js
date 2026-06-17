@@ -13,7 +13,7 @@
   const defaultPattern = ["down","down","up","up","down","up","down","up"];
 
   // 5-state icon lookup
-  var iconLookup = { down: "\u25BC", up: "\u25B2", mute: "\u2014", "down&down": "\u25BC\u25BC", "down&up": "\u25BC\u25B2" };
+  var iconLookup = { down: "\u25BC", up: "\u25B2", mute: "\u2014", "mute&up": "\u2014\u25B2", "down&up": "\u25BC\u25B2" };
 
   function clampBPM(v){ return Math.max(40, Math.min(240, Math.round(v||120))); }
 
@@ -48,13 +48,13 @@
       }
     }catch(e){}
 
-    // Toggle note direction on click: down → up → mute → down&down → down&up → down...
+    // Toggle note direction on click: down → up → mute → mute&up → down&up → down...
     noteBtns.forEach(btn => {
       btn.addEventListener("click", function(){
         if(isRunning) return;
         const cur = this.dataset.strum || defaultPattern[noteBtns.indexOf(this)];
-        // 5-state lookup table
-        var nextLookup = { down: "up", up: "mute", mute: "down&down", "down&down": "down&up", "down&up": "down" };
+        // 5-state lookup table: down → up → mute → mute&up → down&up → down
+        var nextLookup = { down: "up", up: "mute", mute: "mute&up", "mute&up": "down&up", "down&up": "down" };
         var next = nextLookup[cur] || "down";
         this.dataset.strum = next;
         this.textContent = iconLookup[next] || "\u25BC";
@@ -105,9 +105,8 @@
 
     function scheduleNote(stepIndex, time){
       const dir = noteBtns[stepIndex]?.dataset.strum || "down";
-      if(dir === "down&down"){
-        playStrum("down", time);
-        playStrum("down", time + (60.0 / tempo / 4));  // half of 1/8 note = 1/16
+      if(dir === "mute&up"){
+        playStrum("up", time + (60.0 / tempo / 4));  // mute first half, up second half
       } else if(dir === "down&up"){
         playStrum("down", time);
         playStrum("up", time + (60.0 / tempo / 4));

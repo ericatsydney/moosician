@@ -9,17 +9,13 @@
   let tempo = 120;
   let scheduleAheadTime = 0.1; // seconds
   let lookahead = 25.0; // ms
-  let isMuted = false;
-
   function clampBPM(v){ return Math.max(30, Math.min(300, Math.round(v||120))); }
   function initAudio(){ if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
 
   // core functions will be bound once DOM elements exist
   function bindAndInit(){
     const bpmInput = document.getElementById('metronome-rpm');
-    const toggleBtn = document.getElementById('metronome-toggle');
-    const muteBtn = document.getElementById('metronome-mute');
-    const tapBtn = document.getElementById('metronome-tap');
+    const toggleBtn = document.getElementById('metronome-toggle');    const tapBtn = document.getElementById('metronome-tap');
     const tapValue = document.getElementById('metronome-tap-value');
     const beats = Array.from(document.querySelectorAll('.beat'));
     const statusLive = document.getElementById('metronome-status');
@@ -65,7 +61,6 @@
 
     // restore persisted state
     try{ const saved = localStorage.getItem('metronome-bpm'); if(saved) bpmInput.value = saved; }catch(e){}
-    try{ const m = localStorage.getItem('metronome-muted'); if(m==='true'){ isMuted=true; muteBtn.setAttribute('aria-pressed','true'); } }catch(e){}
 
     function scheduleNote(beatIndex, time){
       window.requestAnimationFrame(()=>{
@@ -76,9 +71,7 @@
           if(beatIndex===0){ el.classList.add('accent'); el.classList.remove('regular'); }
           else{ el.classList.add('regular'); el.classList.remove('accent'); }
         }
-      });
-      if(isMuted) return;
-      if(!audioCtx) initAudio();
+      });      if(!audioCtx) initAudio();
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
       osc.type = 'sine';
@@ -143,7 +136,6 @@
 
     // UI wiring
     toggleBtn.addEventListener('click', ()=>{ if(isRunning) stop(); else start(); });
-    muteBtn.addEventListener('click', ()=>{ isMuted = !isMuted; muteBtn.setAttribute('aria-pressed', String(isMuted)); try{ localStorage.setItem('metronome-muted', String(isMuted)); }catch(e){} });
     bpmInput.addEventListener('change', ()=>{ bpmInput.value = clampBPM(bpmInput.value); tempo = Number(bpmInput.value); try{ localStorage.setItem('metronome-bpm', tempo); }catch(e){} });
     if(tapBtn){ tapBtn.addEventListener('click', ()=>{ recordTap(); }); }
     document.addEventListener('keydown', (e)=>{

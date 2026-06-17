@@ -1,7 +1,13 @@
 .strummer-embed { width: 100%; min-width: 0; }
+.strummer {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
 /* Guitar strumming pattern widget */
 .strum-card {
   position: relative;
+  flex: 1;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 20px;
@@ -118,11 +124,11 @@
   box-shadow: none;
 }
 
-.strum-note-btn[data-strum="down\u0026down"] {
-  background: linear-gradient(180deg, rgba(242, 198, 109, 0.22), rgba(242, 198, 109, 0.10));
-  border-color: rgba(242, 198, 109, 0.30);
-  color: #ffe8b2;
-  box-shadow: inset 0 1px 0 rgba(242, 198, 109, 0.10), inset 0 0 0 2px rgba(242, 198, 109, 0.4);
+.strum-note-btn[data-strum="mute\u0026up"] {
+  background: linear-gradient(180deg, rgba(114, 244, 209, 0.18), rgba(72, 207, 255, 0.12));
+  border-color: rgba(114, 244, 209, 0.30);
+  color: var(--accent);
+  box-shadow: inset 0 1px 0 rgba(114, 244, 209, 0.10), inset 0 0 0 2px rgba(114, 244, 209, 0.4);
 }
 
 .strum-note-btn[data-strum="down\u0026up"] {
@@ -148,8 +154,8 @@
   transform: scale(1.1);
 }
 
-.strum-note.active .strum-note-btn[data-strum="down\u0026down"] {
-  box-shadow: 0 0 12px rgba(242, 198, 109, 0.30), 0 0 0 2px rgba(242, 198, 109, 0.25);
+.strum-note.active .strum-note-btn[data-strum="mute\u0026up"] {
+  box-shadow: 0 0 12px rgba(114, 244, 209, 0.30), 0 0 0 2px rgba(114, 244, 209, 0.25);
   transform: scale(1.1);
 }
 
