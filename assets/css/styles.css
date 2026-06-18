@@ -327,7 +327,7 @@ body[data-ready="true"] .site-footer {
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
+    touch-action: pan-x;
     overscroll-behavior-x: contain;
     padding-bottom: 8px;
   }
