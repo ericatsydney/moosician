@@ -325,10 +325,19 @@ body[data-ready="true"] .site-footer {
     gap: 18px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
     overscroll-behavior-x: contain;
     padding-bottom: 8px;
+  }
+
+  .workspace-grid.dragging {
+    scroll-behavior: auto;
+  }
+
+  .workspace-grid {
+    scroll-snap-type: x mandatory;
   }
 
   .workspace-grid::-webkit-scrollbar {

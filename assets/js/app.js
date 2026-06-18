@@ -23,11 +23,13 @@ function initWidgetCarousel() {
   if (!workspace) return;
 
   const breakpoint = window.matchMedia('(max-width: 760px)');
-  let isDragging = false;
-  let startX = 0;
-  let startScroll = 0;
-  let moved = false;
-  const threshold = 8;
+  let isInteracting = false;
+  let scrollEndTimeout = 0;
+
+  const snapCard = (card) => {
+    if (!card) return;
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+  };
 
   const snapToClosest = () => {
     const cards = Array.from(workspace.querySelectorAll('.widget-card'));
@@ -39,75 +41,37 @@ function initWidgetCarousel() {
       return distance < best.distance ? { card, distance } : best;
     }, { card: cards[0], distance: Infinity });
 
-    closest.card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    snapCard(closest.card);
   };
 
-  const hasPointerCapture = typeof workspace.setPointerCapture === 'function';
-
-  const getDragClientX = (event) => {
-    if (event.type.startsWith('touch')) {
-      const touch = event.touches[0] || event.changedTouches[0];
-      return touch ? touch.clientX : null;
-    }
-    return event.clientX;
+  const scheduleSnap = () => {
+    clearTimeout(scrollEndTimeout);
+    scrollEndTimeout = window.setTimeout(() => {
+      if (!isInteracting) snapToClosest();
+    }, 120);
   };
 
-  const onPointerDown = (event) => {
+  const onInteractionStart = () => {
     if (!breakpoint.matches) return;
-    if (event.type === 'pointerdown') {
-      if (event.pointerType === 'mouse' && event.button !== 0) return;
-    } else if (event.type === 'touchstart') {
-      if (event.touches.length !== 1) return;
-    }
-
-    const clientX = getDragClientX(event);
-    if (clientX == null) return;
-
-    isDragging = true;
-    moved = false;
-    startX = clientX;
-    startScroll = workspace.scrollLeft;
-
-    if (hasPointerCapture && event.pointerId != null) {
-      workspace.setPointerCapture(event.pointerId);
-    }
-
+    isInteracting = true;
     workspace.classList.add('dragging');
+    clearTimeout(scrollEndTimeout);
   };
 
-  const onPointerMove = (event) => {
-    if (!isDragging) return;
-    const clientX = getDragClientX(event);
-    if (clientX == null) return;
-
-    const deltaX = clientX - startX;
-    if (Math.abs(deltaX) > threshold) {
-      moved = true;
-      event.preventDefault();
-      workspace.scrollLeft = startScroll - deltaX;
-    }
-  };
-
-  const onPointerUp = (event) => {
-    if (!isDragging) return;
-    isDragging = false;
-
-    if (hasPointerCapture && event.pointerId != null) {
-      workspace.releasePointerCapture(event.pointerId);
-    }
-
+  const onInteractionEnd = () => {
+    if (!breakpoint.matches) return;
+    isInteracting = false;
     workspace.classList.remove('dragging');
-    if (moved) snapToClosest();
+    scheduleSnap();
   };
 
-  workspace.addEventListener('pointerdown', onPointerDown, { passive: false });
-  workspace.addEventListener('pointermove', onPointerMove, { passive: false });
-  workspace.addEventListener('pointerup', onPointerUp);
-  workspace.addEventListener('pointercancel', onPointerUp);
-  workspace.addEventListener('touchstart', onPointerDown, { passive: false });
-  workspace.addEventListener('touchmove', onPointerMove, { passive: false });
-  workspace.addEventListener('touchend', onPointerUp);
-  workspace.addEventListener('touchcancel', onPointerUp);
+  workspace.addEventListener('pointerdown', onInteractionStart);
+  workspace.addEventListener('pointerup', onInteractionEnd);
+  workspace.addEventListener('pointercancel', onInteractionEnd);
+  workspace.addEventListener('touchstart', onInteractionStart, { passive: true });
+  workspace.addEventListener('touchend', onInteractionEnd);
+  workspace.addEventListener('touchcancel', onInteractionEnd);
+  workspace.addEventListener('scroll', scheduleSnap, { passive: true });
 
   window.addEventListener('resize', () => {
     if (!breakpoint.matches) {
