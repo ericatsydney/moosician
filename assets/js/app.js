@@ -42,21 +42,45 @@ function initWidgetCarousel() {
     closest.card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
   };
 
+  const hasPointerCapture = typeof workspace.setPointerCapture === 'function';
+
+  const getDragClientX = (event) => {
+    if (event.type.startsWith('touch')) {
+      const touch = event.touches[0] || event.changedTouches[0];
+      return touch ? touch.clientX : null;
+    }
+    return event.clientX;
+  };
+
   const onPointerDown = (event) => {
     if (!breakpoint.matches) return;
-    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    if (event.type === 'pointerdown') {
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+    } else if (event.type === 'touchstart') {
+      if (event.touches.length !== 1) return;
+    }
+
+    const clientX = getDragClientX(event);
+    if (clientX == null) return;
 
     isDragging = true;
     moved = false;
-    startX = event.clientX;
+    startX = clientX;
     startScroll = workspace.scrollLeft;
-    workspace.setPointerCapture(event.pointerId);
+
+    if (hasPointerCapture && event.pointerId != null) {
+      workspace.setPointerCapture(event.pointerId);
+    }
+
     workspace.classList.add('dragging');
   };
 
   const onPointerMove = (event) => {
     if (!isDragging) return;
-    const deltaX = event.clientX - startX;
+    const clientX = getDragClientX(event);
+    if (clientX == null) return;
+
+    const deltaX = clientX - startX;
     if (Math.abs(deltaX) > threshold) {
       moved = true;
       event.preventDefault();
@@ -67,7 +91,11 @@ function initWidgetCarousel() {
   const onPointerUp = (event) => {
     if (!isDragging) return;
     isDragging = false;
-    workspace.releasePointerCapture(event.pointerId);
+
+    if (hasPointerCapture && event.pointerId != null) {
+      workspace.releasePointerCapture(event.pointerId);
+    }
+
     workspace.classList.remove('dragging');
     if (moved) snapToClosest();
   };
@@ -76,6 +104,10 @@ function initWidgetCarousel() {
   workspace.addEventListener('pointermove', onPointerMove, { passive: false });
   workspace.addEventListener('pointerup', onPointerUp);
   workspace.addEventListener('pointercancel', onPointerUp);
+  workspace.addEventListener('touchstart', onPointerDown, { passive: false });
+  workspace.addEventListener('touchmove', onPointerMove, { passive: false });
+  workspace.addEventListener('touchend', onPointerUp);
+  workspace.addEventListener('touchcancel', onPointerUp);
 
   window.addEventListener('resize', () => {
     if (!breakpoint.matches) {
