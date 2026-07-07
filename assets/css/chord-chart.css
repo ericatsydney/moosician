@@ -134,9 +134,9 @@
 
   .chord-btn {
     min-width: 32px;
-    min-height: 28px;
-    padding: 0.28rem 0.48rem;
-    font-size: 0.72rem;
+    min-height: 32px;
+    padding: 0.32rem 0.52rem;
+    font-size: 0.74rem;
     border-radius: 6px;
   }
 

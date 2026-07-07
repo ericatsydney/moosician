@@ -166,5 +166,7 @@
   .strum-notes {
     padding: 10px 8px;
     gap: 4px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
   }
 }

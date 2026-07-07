@@ -23,46 +23,15 @@ function initWidgetCarousel() {
   if (!workspace) return;
 
   const breakpoint = window.matchMedia('(max-width: 760px)');
-  let isInteracting = false;
-  let scrollEndTimeout = 0;
-
-  const snapCard = (card) => {
-    if (!card) return;
-    card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-  };
-
-  const snapToClosest = () => {
-    const cards = Array.from(workspace.querySelectorAll('.widget-card'));
-    if (!cards.length) return;
-
-    const scrollLeft = workspace.scrollLeft;
-    const closest = cards.reduce((best, card) => {
-      const distance = Math.abs(card.offsetLeft - scrollLeft);
-      return distance < best.distance ? { card, distance } : best;
-    }, { card: cards[0], distance: Infinity });
-
-    snapCard(closest.card);
-  };
-
-  const scheduleSnap = () => {
-    clearTimeout(scrollEndTimeout);
-    scrollEndTimeout = window.setTimeout(() => {
-      if (!isInteracting) snapToClosest();
-    }, 120);
-  };
 
   const onInteractionStart = () => {
     if (!breakpoint.matches) return;
-    isInteracting = true;
     workspace.classList.add('dragging');
-    clearTimeout(scrollEndTimeout);
   };
 
   const onInteractionEnd = () => {
     if (!breakpoint.matches) return;
-    isInteracting = false;
     workspace.classList.remove('dragging');
-    scheduleSnap();
   };
 
   workspace.addEventListener('pointerdown', onInteractionStart);
@@ -71,7 +40,6 @@ function initWidgetCarousel() {
   workspace.addEventListener('touchstart', onInteractionStart, { passive: true });
   workspace.addEventListener('touchend', onInteractionEnd);
   workspace.addEventListener('touchcancel', onInteractionEnd);
-  workspace.addEventListener('scroll', scheduleSnap, { passive: true });
 
   window.addEventListener('resize', () => {
     if (!breakpoint.matches) {
