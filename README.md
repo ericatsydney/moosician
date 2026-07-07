@@ -154,3 +154,27 @@ http://localhost:8000/tests/metronome-smoke.html
 - `assets/js/metronome.js` â€” metronome behavior and scheduling logic
 - `tests/metronome-smoke.html` â€” smoke test harness page
 - `tests/metronome.test.js` â€” automated smoke test script
+
+## Manual Mobile Verification
+
+Quick steps to verify touch/scroll behavior on mobile devices or emulators:
+
+1. Start a local server from the project root:
+
+```bash
+python -m http.server 8000
+```
+
+2. Open the site on a phone or in a browser's mobile emulator:
+
+```
+http://localhost:8000
+```
+
+3. On a narrow/mobile viewport:
+  - Swipe left/right across the widget area to switch widgets.
+  - Scroll the page up and down over the widget area to confirm vertical scrolling still works.
+  - Verify the `Metronome` controls remain operable (BPM input, Start/Stop, Tap tempo).
+
+4. If swiping is too sensitive or vertical scroll still gets blocked, test on a physical device and report which browser and OS you used.
+

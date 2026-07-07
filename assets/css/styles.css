@@ -385,7 +385,8 @@ body[data-ready="true"] .site-footer {
       scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
-      touch-action: pan-y;
+      /* allow both horizontal swipes and vertical page scroll */
+      touch-action: pan-x pan-y;
       overscroll-behavior-x: contain;
       overscroll-behavior-y: auto;
       padding: 2px 0 4px;
