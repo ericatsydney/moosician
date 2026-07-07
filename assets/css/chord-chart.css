@@ -113,8 +113,42 @@
 @media (max-width: 760px) {
   .chord-card {
     padding: 18px;
+    gap: 12px;
   }
+
+  .chord-selectors {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .chord-roots {
+    flex-wrap: wrap;
+    gap: 3px;
+    padding-right: 6px;
+  }
+
+  .chord-variants {
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+
+  .chord-btn {
+    min-width: 32px;
+    min-height: 28px;
+    padding: 0.28rem 0.48rem;
+    font-size: 0.72rem;
+    border-radius: 6px;
+  }
+
+  .chord-diagram {
+    min-height: 140px;
+  }
+
   .chord-svg {
-    width: 200px;
+    width: 180px;
+  }
+
+  .chord-label {
+    font-size: 1.1rem;
   }
 }

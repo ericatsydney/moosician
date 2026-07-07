@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   color-scheme: dark;
   --bg: #070b14;
   --bg-soft: #0e1524;
@@ -320,9 +320,9 @@ body[data-ready="true"] .site-footer {
     }
 
     .site-header {
-      margin-top: 4px;
-      padding: 8px 12px;
-      gap: 8px;
+      margin-top: 8px;
+      padding: 10px 14px;
+      gap: 10px;
     }
 
     .brand-mark {
@@ -341,8 +341,8 @@ body[data-ready="true"] .site-footer {
     }
 
     .hero {
-      padding: 6px 0 2px;
-      gap: 4px;
+      padding: 8px 0 2px;
+      gap: 8px;
     }
 
     .hero-content {
@@ -353,7 +353,7 @@ body[data-ready="true"] .site-footer {
       max-width: none;
       font-size: clamp(1.4rem, 7vw, 2.2rem);
       line-height: 1.05;
-      margin: 24px 0;
+      margin: 0;
     }
 
     .hero-subtitle {
@@ -365,9 +365,7 @@ body[data-ready="true"] .site-footer {
     }
 
     .eyebrow {
-      margin: 0 0 4px;
-      font-size: 0.65rem;
-      letter-spacing: 0.14em;
+      display: none;
     }
 
     .swipe-hint {
@@ -379,7 +377,7 @@ body[data-ready="true"] .site-footer {
     .workspace-grid {
       display: flex;
       flex-wrap: nowrap;
-      gap: 12px;
+      gap: 0;
       overflow-x: auto;
       overflow-y: visible;
       scroll-snap-type: x mandatory;
@@ -389,15 +387,12 @@ body[data-ready="true"] .site-footer {
       touch-action: pan-x pan-y;
       overscroll-behavior-x: contain;
       overscroll-behavior-y: auto;
-      padding: 2px 0 4px;
+      padding: 6px 0 8px;
+      scroll-padding: 0 20px;
     }
 
     .workspace-grid.dragging {
       scroll-behavior: auto;
-    }
-
-    .workspace-grid {
-      scroll-snap-type: x mandatory;
     }
 
     .workspace-grid::-webkit-scrollbar {
@@ -405,27 +400,29 @@ body[data-ready="true"] .site-footer {
     }
 
     .widget-card {
-      flex: 0 0 100%;
-      width: 100%;
-      min-width: 100%;
-      max-width: 100%;
+      flex: 0 0 calc(100vw - 40px);
+      width: calc(100vw - 40px);
+      min-width: calc(100vw - 40px);
+      max-width: calc(100vw - 40px);
       overflow: visible;
-      scroll-snap-align: start;
-      padding: 14px;
+      scroll-snap-align: center;
+      padding: 18px;
+      margin: 0 20px;
+      box-sizing: border-box;
     }
 
     .widget-subtitle {
-      margin: 1px 0 8px;
+      margin: 2px 0 12px;
       font-size: 0.78rem;
     }
 
     .site-footer {
       flex-direction: column;
-      margin-top: 2px;
-      margin-bottom: 8px;
-      padding: 8px 12px;
+      margin-top: 8px;
+      margin-bottom: 12px;
+      padding: 12px 16px;
       font-size: 0.8rem;
-      gap: 4px;
+      gap: 6px;
     }
 
     .site-footer span:last-child {

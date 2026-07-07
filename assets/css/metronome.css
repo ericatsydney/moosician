@@ -252,6 +252,8 @@
 
   .metronome-card {
     grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 20px;
   }
 
   .buttons {
@@ -263,7 +265,14 @@
   }
 
   .beat-strip {
-    min-height: 120px;
+    min-height: 100px;
+    padding: 18px 14px;
+    gap: 16px;
+  }
+
+  .beat {
+    width: 20px;
+    height: 20px;
   }
 }
 
