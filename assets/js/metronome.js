@@ -9,7 +9,9 @@
   let tempo = 120;
   let scheduleAheadTime = 0.1; // seconds
   let lookahead = 25.0; // ms
+  let currentMeter = 4;
   function clampBPM(v){ return Math.max(30, Math.min(300, Math.round(v||120))); }
+  function clampMeter(v){ return (v === 3) ? 3 : 4; }
   function initAudio(){ if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
 
   // core functions will be bound once DOM elements exist
@@ -19,10 +21,43 @@
     const tapValue = document.getElementById('metronome-tap-value');
     const beats = Array.from(document.querySelectorAll('.beat'));
     const statusLive = document.getElementById('metronome-status');
+    const meterButtons = Array.from(document.querySelectorAll('.meter-btn'));
     if(!bpmInput || !toggleBtn) return;
 
     let tapTimes = [];
     let tapTimeout = null;
+
+    function syncMeterButtons(){
+      meterButtons.forEach((btn) => {
+        const meter = clampMeter(Number(btn.dataset.meter || 4));
+        const isActive = meter === currentMeter;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-pressed', String(isActive));
+      });
+    }
+
+    function updateBeatLayout(){
+      beats.forEach((beat, idx) => {
+        const visible = idx < currentMeter;
+        beat.style.display = visible ? '' : 'none';
+        beat.setAttribute('aria-hidden', String(!visible));
+      });
+      if(currentBeat >= currentMeter){ currentBeat = 0; }
+      beats.forEach((beat) => beat.classList.remove('active', 'accent', 'regular'));
+    }
+
+    function setMeter(meter){
+      currentMeter = clampMeter(Number(meter));
+      currentBeat = 0;
+      updateBeatLayout();
+      syncMeterButtons();
+      window.dispatchEvent(new CustomEvent('moosician-meter-change', {
+        detail: { meter: currentMeter }
+      }));
+      if(statusLive){
+        statusLive.textContent = `Meter ${currentMeter}/4`;
+      }
+    }
 
     function updateTapDisplay(value){
       if(!tapValue) return;
@@ -87,13 +122,13 @@
     function nextNote(){
       const secondsPerBeat = 60.0 / tempo;
       nextNoteTime += secondsPerBeat;
-      currentBeat = (currentBeat + 1) % 4;
+      currentBeat = (currentBeat + 1) % currentMeter;
     }
 
     function scheduler(){
       while(nextNoteTime < audioCtx.currentTime + scheduleAheadTime){
         scheduleNote(currentBeat, nextNoteTime);
-        statusLive.textContent = `Beat ${currentBeat+1}`;
+        statusLive.textContent = `Beat ${currentBeat+1} of ${currentMeter}/4`;
         nextNote();
       }
     }
@@ -135,6 +170,12 @@
     }
 
     // UI wiring
+    meterButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const selectedMeter = clampMeter(Number(btn.dataset.meter || 4));
+        setMeter(selectedMeter);
+      });
+    });
     toggleBtn.addEventListener('click', ()=>{ if(isRunning) stop(); else start(); });
     bpmInput.addEventListener('change', ()=>{ bpmInput.value = clampBPM(bpmInput.value); tempo = Number(bpmInput.value); try{ localStorage.setItem('metronome-bpm', tempo); }catch(e){} });
     if(tapBtn){ tapBtn.addEventListener('click', ()=>{ recordTap(); }); }
@@ -144,8 +185,16 @@
       }
     });
 
+    updateBeatLayout();
+    syncMeterButtons();
+
     // expose for debugging
-    window._metronome = { start, stop, setBpm:(v)=>{ bpmInput.value = clampBPM(v); tempo = Number(bpmInput.value); } };
+    window._metronome = {
+      start,
+      stop,
+      setBpm:(v)=>{ bpmInput.value = clampBPM(v); tempo = Number(bpmInput.value); },
+      setMeter:(v)=>{ setMeter(v); }
+    };
   }
 
   function waitForAppReady(){

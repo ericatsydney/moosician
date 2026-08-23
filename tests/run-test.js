@@ -43,6 +43,8 @@ assert(mainHtml.includes('id="metronome-rpm"'), 'BPM input element exists in HTM
 assert(mainHtml.includes('id="metronome-toggle"'), 'Metronome toggle button exists in HTML');
 assert(mainHtml.includes('id="metronome-tap"'), 'Tap tempo button exists in HTML');
 assert(mainHtml.includes('id="metronome-tap-value"'), 'Tap tempo display exists in HTML');
+assert(mainHtml.includes('data-meter="3"'), '3/4 meter toggle exists in HTML');
+assert(mainHtml.includes('data-meter="4"'), '4/4 meter toggle exists in HTML');
 assert(mainHtml.match(/class="beat"/g) && mainHtml.match(/class="beat"/g).length === 4, 'Four beat indicators exist');
 assert(mainHtml.includes('id="strum-toggle"'), 'Strummer toggle button exists in HTML');
 

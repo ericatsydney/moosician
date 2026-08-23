@@ -8,66 +8,148 @@
   let tempo = 120;
   let scheduleAheadTime = 0.1;
   let lookahead = 25.0;
+  let currentMeter = 4;
+  let noteBtns = [];
+  let noteWraps = [];
 
   // Default pattern: D, D, U, U, D, U, D, U (basic 4/4 strumming)
-  const defaultPattern = ["down","down","up","up","down","up","down","up"];
+  const defaultPattern = {
+    3: ["down","down","up","up","down","up"],
+    4: ["down","down","up","up","down","up","down","up"]
+  };
 
   // 5-state icon lookup
   var iconLookup = { down: "↓", up: "↑", mute: "—", "mute&up": "—↑", "down&up": "↓↑" };
 
   function clampBPM(v){ return Math.max(40, Math.min(240, Math.round(v||120))); }
+  function clampMeter(v){ return (v === 3) ? 3 : 4; }
 
   function initAudio(){
     if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
 
+  function getPatternForMeter(meter){
+    const targetMeter = clampMeter(meter);
+    const base = defaultPattern[targetMeter] || defaultPattern[4];
+    const saved = (() => {
+      try {
+        const raw = localStorage.getItem("strummer-pattern");
+        if(!raw) return null;
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : null;
+      } catch (e) {
+        return null;
+      }
+    })();
+
+    if(Array.isArray(saved) && saved.length === base.length){
+      return saved.slice(0, base.length);
+    }
+
+    if(Array.isArray(saved) && saved.length > 0){
+      return saved.slice(0, base.length).concat(base.slice(Math.min(saved.length, base.length))); 
+    }
+
+    return base.slice();
+  }
+
+  function bindStrumButton(button, noteContainer, pattern){
+    if(!button) return;
+    button.addEventListener("click", function(){
+      if(isRunning) return;
+      const btnIndex = Array.from(noteContainer.querySelectorAll(".strum-note-btn")).indexOf(this);
+      const cur = this.dataset.strum || pattern[btnIndex] || "down";
+      const nextLookup = { down: "up", up: "mute", mute: "mute&up", "mute&up": "down&up", "down&up": "down" };
+      const next = nextLookup[cur] || "down";
+      this.dataset.strum = next;
+      this.textContent = iconLookup[next] || "↓";
+      const pat = Array.from(noteContainer.querySelectorAll(".strum-note-btn")).map(b => b.dataset.strum);
+      try{ localStorage.setItem("strummer-pattern", JSON.stringify(pat)); }catch(e){}
+    });
+  }
+
+  function renderStrumFields(){
+    const meterButtons = Array.from(document.querySelectorAll(".meter-btn"));
+    const noteContainer = document.querySelector(".strum-notes");
+    if(!noteContainer) return;
+
+    const targetCount = currentMeter === 3 ? 6 : 8;
+    const existing = Array.from(noteContainer.querySelectorAll(".strum-note"));
+    const pattern = getPatternForMeter(currentMeter);
+
+    existing.forEach((el, index) => {
+      if(index < targetCount) {
+        const btn = el.querySelector(".strum-note-btn");
+        const dir = pattern[index] || "down";
+        btn.dataset.strum = dir;
+        btn.textContent = iconLookup[dir] || "↓";
+        bindStrumButton(btn, noteContainer, pattern);
+      } else {
+        el.remove();
+      }
+    });
+
+    while(noteContainer.children.length < targetCount){
+      const newWrap = document.createElement("div");
+      newWrap.className = "strum-note";
+      newWrap.setAttribute("role", "listitem");
+      const newBtn = document.createElement("button");
+      newBtn.type = "button";
+      newBtn.className = "strum-note-btn";
+      const dir = pattern[noteContainer.children.length] || "down";
+      newBtn.dataset.strum = dir;
+      newBtn.textContent = iconLookup[dir] || "↓";
+      newBtn.setAttribute("aria-label", "Note " + (noteContainer.children.length + 1));
+      bindStrumButton(newBtn, noteContainer, pattern);
+      newWrap.appendChild(newBtn);
+      noteContainer.appendChild(newWrap);
+    }
+
+    noteBtns = Array.from(noteContainer.querySelectorAll(".strum-note-btn"));
+    noteWraps = Array.from(noteContainer.querySelectorAll(".strum-note"));
+    currentStep = Math.min(currentStep, Math.max(noteBtns.length - 1, 0));
+
+    meterButtons.forEach((btn) => {
+      const isActive = clampMeter(Number(btn.dataset.meter || 4)) === currentMeter;
+      btn.classList.toggle("active", isActive);
+      btn.setAttribute("aria-pressed", String(isActive));
+    });
+  }
+
   function bindAndInit(){
     const metronomeRpmInput = document.getElementById("metronome-rpm");
     const toggleBtn = document.getElementById("strum-toggle");
-    const noteBtns = Array.from(document.querySelectorAll(".strum-note-btn"));
-    const noteWraps = Array.from(document.querySelectorAll(".strum-note"));
+    const noteContainer = document.querySelector(".strum-notes");
+    const meterButtons = Array.from(document.querySelectorAll(".meter-btn"));
 
-    if(!toggleBtn) return;
+    if(!toggleBtn || !noteContainer) return;
+
+    function applyMeter(meter){
+      currentMeter = clampMeter(Number(meter || 4));
+      renderStrumFields();
+    }
+
+    currentMeter = (() => {
+      const enabledBtn = meterButtons.find((btn) => btn.classList.contains("active"));
+      return clampMeter(Number((enabledBtn && enabledBtn.dataset.meter) || 4));
+    })();
+
+    renderStrumFields();
 
     // Read tempo from the shared metronome BPM input
     if(metronomeRpmInput){
       tempo = clampBPM(Number(metronomeRpmInput.value));
     }
-    try{
-      const saved = localStorage.getItem("strummer-pattern");
-      if(saved){
-        const arr = JSON.parse(saved);
-        if(Array.isArray(arr) && arr.length === 8){
-          arr.forEach((dir, i) => {
-            if(i < noteBtns.length){
-              noteBtns[i].dataset.strum = dir;
-              noteBtns[i].textContent = iconLookup[dir] || "↓";
-            }
-          });
-        }
-      }
-    }catch(e){}
 
-    // Toggle note direction on click: down → up → mute → mute&up → down&up → down...
-    noteBtns.forEach(btn => {
+    meterButtons.forEach((btn) => {
       btn.addEventListener("click", function(){
-        if(isRunning) return;
-        const cur = this.dataset.strum || defaultPattern[noteBtns.indexOf(this)];
-        // 5-state lookup table: down → up → mute → mute&up → down&up → down
-        var nextLookup = { down: "up", up: "mute", mute: "mute&up", "mute&up": "down&up", "down&up": "down" };
-        var next = nextLookup[cur] || "down";
-        this.dataset.strum = next;
-        this.textContent = iconLookup[next] || "↓";
-        const pat = noteBtns.map(b => b.dataset.strum);
-        try{ localStorage.setItem("strummer-pattern", JSON.stringify(pat)); }catch(e){}
+        applyMeter(this.dataset.meter || 4);
       });
     });
 
-    // Init button text from dataset
-    noteBtns.forEach((btn, i) => {
-      if(!btn.dataset.strum) btn.dataset.strum = defaultPattern[i];
-      const dir = btn.dataset.strum;
-      btn.textContent = iconLookup[dir] || "↓";
+    window.addEventListener("moosician-meter-change", function(event){
+      const meter = Number((event && event.detail && event.detail.meter) || currentMeter || 4);
+      applyMeter(meter);
     });
 
     // Strum sound: "da" for down, "di" for up
@@ -117,15 +199,16 @@
     }
 
     function nextNote(){
-      const secondsPerStep = 60.0 / tempo / 2; // 1/8 note = half a beat
+      const stepsInPattern = Math.max(noteBtns.length || (currentMeter === 3 ? 6 : 8), 1);
+      const secondsPerStep = 60.0 / tempo / 2;
       nextNoteTime += secondsPerStep;
-      currentStep = (currentStep + 1) % 8;
+      currentStep = (currentStep + 1) % stepsInPattern;
     }
 
     function scheduler(){
+      const stepsInPattern = Math.max(noteBtns.length || (currentMeter === 3 ? 6 : 8), 1);
       while(nextNoteTime < audioCtx.currentTime + scheduleAheadTime){
-        scheduleNote(currentStep, nextNoteTime);
-        
+        scheduleNote(currentStep % stepsInPattern, nextNoteTime);
         nextNote();
       }
     }
