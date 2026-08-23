@@ -170,6 +170,28 @@ body[data-ready="true"] .site-footer {
   font-size: 0.84rem;
 }
 
+/* Primary site navigation in header */
+.site-nav {
+  margin-left: auto;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.site-nav a {
+  color: var(--muted);
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 140ms ease, color 140ms ease, transform 120ms ease;
+}
+.site-nav a:hover,
+.site-nav a:focus-visible {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.02);
+  transform: translateY(-1px);
+}
+
 .hero {
   display: grid;
   grid-template-columns: 1fr;
@@ -323,6 +345,16 @@ body[data-ready="true"] .site-footer {
       margin-top: 8px;
       padding: 10px 14px;
       gap: 10px;
+    }
+
+    /* Compact header on small screens: hide full nav and align brand */
+    .site-header {
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .site-nav {
+      display: none;
     }
 
     .brand-mark {
