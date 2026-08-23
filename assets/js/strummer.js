@@ -13,7 +13,7 @@
   const defaultPattern = ["down","down","up","up","down","up","down","up"];
 
   // 5-state icon lookup
-  var iconLookup = { down: "\u25BC", up: "\u25B2", mute: "\u2014", "mute&up": "\u2014\u25B2", "down&up": "\u25BC\u25B2" };
+  var iconLookup = { down: "↓", up: "↑", mute: "—", "mute&up": "—↑", "down&up": "↓↑" };
 
   function clampBPM(v){ return Math.max(40, Math.min(240, Math.round(v||120))); }
 
@@ -41,7 +41,7 @@
           arr.forEach((dir, i) => {
             if(i < noteBtns.length){
               noteBtns[i].dataset.strum = dir;
-              noteBtns[i].textContent = iconLookup[dir] || "\u25BC";
+              noteBtns[i].textContent = iconLookup[dir] || "↓";
             }
           });
         }
@@ -57,7 +57,7 @@
         var nextLookup = { down: "up", up: "mute", mute: "mute&up", "mute&up": "down&up", "down&up": "down" };
         var next = nextLookup[cur] || "down";
         this.dataset.strum = next;
-        this.textContent = iconLookup[next] || "\u25BC";
+        this.textContent = iconLookup[next] || "↓";
         const pat = noteBtns.map(b => b.dataset.strum);
         try{ localStorage.setItem("strummer-pattern", JSON.stringify(pat)); }catch(e){}
       });
@@ -67,7 +67,7 @@
     noteBtns.forEach((btn, i) => {
       if(!btn.dataset.strum) btn.dataset.strum = defaultPattern[i];
       const dir = btn.dataset.strum;
-      btn.textContent = iconLookup[dir] || "\u25BC";
+      btn.textContent = iconLookup[dir] || "↓";
     });
 
     // Strum sound: "da" for down, "di" for up

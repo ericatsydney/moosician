@@ -46,21 +46,13 @@
   padding: 24px;
   border: 1px solid rgba(167, 182, 214, 0.16);
   border-radius: 28px;
-  background:
-    linear-gradient(180deg, rgba(15, 23, 39, 0.96), rgba(9, 15, 28, 0.98)),
-    rgba(21, 27, 35, 0.96);
+  background: #0b111d;
   color: var(--text, #eee);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
 }
 
 .metronome-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(135deg, rgba(114, 244, 209, 0.08), transparent 30%),
-    linear-gradient(315deg, rgba(72, 207, 255, 0.06), transparent 28%);
-  pointer-events: none;
+  content: none;
 }
 
 .metronome-controls,
@@ -118,7 +110,7 @@
   justify-content: center;
   min-height: 42px;
   padding: 0.72rem 1rem;
-  border-radius: 999px;
+  border-radius: 8px;
   border: 1px solid rgba(167, 182, 214, 0.18);
   background: rgba(255, 255, 255, 0.04);
   color: inherit;
@@ -143,7 +135,7 @@
 
 .btn.primary {
   border: 1px solid transparent;
-  background: linear-gradient(135deg, var(--accent) 0%, #98f2ff 100%);
+  background: var(--accent);
   color: #041018;
   box-shadow: 0 14px 28px rgba(72, 207, 255, 0.16);
 }
@@ -214,8 +206,8 @@
 .beat {
   width: 16px;
   height: 16px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(167, 182, 214, 0.26), rgba(167, 182, 214, 0.5));
+  border-radius: 4px;
+  background: rgba(167, 182, 214, 0.28);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
   transition:
     transform 120ms ease,
@@ -232,11 +224,11 @@
 }
 
 .beat.accent {
-  background: linear-gradient(180deg, rgba(242, 198, 109, 0.92), rgba(255, 227, 150, 0.98));
+  background: rgba(242, 198, 109, 0.9);
 }
 
 .beat.regular {
-  background: linear-gradient(180deg, rgba(114, 244, 209, 0.82), rgba(72, 207, 255, 0.96));
+  background: rgba(114, 244, 209, 0.85);
 }
 
 .sr-only {

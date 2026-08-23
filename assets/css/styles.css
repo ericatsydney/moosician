@@ -34,40 +34,13 @@ body {
   color: var(--text);
   font-family: var(--body);
   line-height: 1.5;
-  background:
-    radial-gradient(circle at 18% 8%, rgba(72, 207, 255, 0.18), transparent 24rem),
-    radial-gradient(circle at 82% 18%, rgba(114, 244, 209, 0.12), transparent 26rem),
-    linear-gradient(180deg, #060912 0%, #09111d 54%, #070b14 100%);
+  background: var(--bg);
   overflow-x: hidden;
 }
 
 body::before,
 body::after {
-  content: "";
-  position: fixed;
-  inset: auto;
-  pointer-events: none;
-  z-index: -1;
-  filter: blur(18px);
-  opacity: 0.9;
-}
-
-body::before {
-  top: -6rem;
-  right: -8rem;
-  width: 22rem;
-  height: 22rem;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(242, 198, 109, 0.18) 0%, rgba(242, 198, 109, 0) 70%);
-}
-
-body::after {
-  bottom: -8rem;
-  left: -10rem;
-  width: 30rem;
-  height: 30rem;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(114, 244, 209, 0.12) 0%, rgba(114, 244, 209, 0) 68%);
+  content: none;
 }
 
 a {
@@ -124,7 +97,7 @@ body[data-ready="true"] .site-footer {
   padding: 16px 20px;
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  background: linear-gradient(180deg, rgba(11, 17, 30, 0.88), rgba(11, 17, 30, 0.68));
+  background: rgba(13, 20, 35, 0.9);
   box-shadow: var(--shadow);
   backdrop-filter: blur(18px);
 }
@@ -143,9 +116,7 @@ body[data-ready="true"] .site-footer {
   place-items: center;
   border: 1px solid rgba(114, 244, 209, 0.32);
   border-radius: 14px;
-  background:
-    linear-gradient(135deg, rgba(72, 207, 255, 0.18), rgba(114, 244, 209, 0.18)),
-    rgba(255, 255, 255, 0.02);
+  background: rgba(114, 244, 209, 0.08);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
   color: var(--accent);
   font-family: var(--display);
@@ -252,7 +223,7 @@ body[data-ready="true"] .site-footer {
   justify-content: center;
   width: 2rem;
   height: 2rem;
-  border-radius: 999px;
+  border-radius: 6px;
   background: rgba(114, 244, 209, 0.12);
   color: var(--accent);
   font-size: 1rem;
